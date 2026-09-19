@@ -1,0 +1,823 @@
+/* ==========================================================
+   WEDORA – register.css
+   Dedicated stylesheet for the Registration page
+   Pink / Rose Gold Theme – Split screen layout
+   ========================================================== */
+
+/* ---- Design Tokens ---- */
+:root {
+  --pink-50:  #fff0f3;
+  --pink-100: #ffe0e8;
+  --pink-200: #ffc2d1;
+  --pink-400: #f472a8;
+  --pink-500: #e84393;
+  --pink-600: #c9186b;
+  --pink-700: #a01255;
+  --pink-800: #7c0c41;
+
+  --rose:       #d63f7a;
+  --rose-dark:  #b02e62;
+  --rose-light: #f7d6e4;
+
+  --maroon:     #862947;
+  --maroon-dk:  #6c1f39;
+
+  --neutral-50:  #fafafa;
+  --neutral-100: #f4f4f5;
+  --neutral-200: #e4e4e7;
+  --neutral-400: #a1a1aa;
+  --neutral-600: #52525b;
+  --neutral-900: #18181b;
+
+  --white: #ffffff;
+
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+
+  --shadow-card: 0 8px 40px rgba(134,41,71,.12);
+  --shadow-btn:  0 4px 20px rgba(198,24,107,.35);
+  --shadow-btn-hover: 0 8px 28px rgba(198,24,107,.45);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  color: var(--neutral-900);
+  background: var(--pink-50);
+  overflow: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ===================================================
+   PAGE WRAPPER – Full-screen split layout
+   =================================================== */
+.page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===================================================
+   LEFT PANEL – Couple Image
+   =================================================== */
+.image-panel {
+  position: relative;
+  overflow: hidden;
+  background: #f0d5da;
+}
+
+.couple-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 8s ease;
+}
+
+.image-panel:hover .couple-img {
+  transform: scale(1.04);
+}
+
+/* ---- Gradient overlay ---- */
+.image-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(120,20,60,.55) 0%,
+    rgba(80,10,40,.2) 45%,
+    rgba(30,5,20,.65) 100%
+  );
+  pointer-events: none;
+}
+
+/* ---- Overlay content ---- */
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 40px 48px;
+}
+
+.overlay-brand img {
+  height: 48px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.overlay-quote {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.quote-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(18px, 2.2vw, 26px);
+  line-height: 1.5;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 2px 12px rgba(0,0,0,.3);
+}
+
+.quote-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.4);
+  transition: background .3s;
+}
+.dot.active {
+  background: rgba(255,255,255,.9);
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ===================================================
+   RIGHT PANEL – Registration Form
+   =================================================== */
+.form-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  overflow: hidden;
+  position: relative;
+}
+
+/* subtle pink top bar */
+.form-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--pink-400), var(--rose), var(--maroon));
+  z-index: 10;
+}
+
+/* ---- Mobile Brand Bar (hidden on desktop) ---- */
+.mobile-brand {
+  display: none;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--pink-100);
+  background: var(--white);
+}
+
+/* ---- Scroll area ---- */
+.form-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+.form-scroll-area::-webkit-scrollbar { width: 5px; }
+.form-scroll-area::-webkit-scrollbar-track { background: var(--pink-50); }
+.form-scroll-area::-webkit-scrollbar-thumb {
+  background: var(--pink-200);
+  border-radius: 10px;
+}
+
+/* ---- Form Container ---- */
+.form-container {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 40px 36px 48px;
+}
+
+/* ---- Back link ---- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-400);
+  text-decoration: none;
+  transition: color .2s;
+  margin-bottom: 28px;
+}
+
+.back-link svg {
+  width: 15px;
+  height: 15px;
+  transition: transform .2s;
+}
+
+.back-link:hover {
+  color: var(--rose);
+}
+.back-link:hover svg {
+  transform: translateX(-3px);
+}
+
+/* ---- Title Block ---- */
+.title-block {
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 700;
+  color: var(--maroon);
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.page-subtitle {
+  font-size: 13.5px;
+  color: var(--neutral-400);
+  line-height: 1.5;
+}
+
+/* ===================================================
+   PROGRESS STEPS
+   =================================================== */
+.progress-steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.step-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--neutral-100);
+  color: var(--neutral-400);
+  border: 2px solid var(--neutral-200);
+  transition: all .3s ease;
+}
+
+.step-label {
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--neutral-400);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color .3s;
+}
+
+.step.active .step-circle {
+  background: linear-gradient(135deg, var(--rose), var(--maroon));
+  color: var(--white);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(198,24,107,.35);
+}
+
+.step.active .step-label {
+  color: var(--rose);
+  font-weight: 600;
+}
+
+.step-line {
+  flex: 1;
+  height: 2px;
+  background: var(--neutral-200);
+  margin: 0 8px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.step-line::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--rose), var(--maroon));
+  transition: width .4s ease;
+}
+
+/* ===================================================
+   FORM FIELDS
+   =================================================== */
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--neutral-600);
+  letter-spacing: 0.01em;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.input-wrap input {
+  width: 100%;
+  height: 46px;
+  padding: 0 46px 0 44px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--neutral-900);
+  background: var(--neutral-50);
+  border: 1.5px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  outline: none;
+}
+
+.input-wrap input::placeholder {
+  color: var(--neutral-400);
+  font-size: 13px;
+}
+
+.input-wrap input:hover {
+  border-color: var(--pink-200);
+  background: var(--white);
+}
+
+.input-wrap input:focus {
+  border-color: var(--rose);
+  background: var(--white);
+  box-shadow: 0 0 0 3.5px rgba(214,63,122,.12);
+}
+
+.input-wrap input[aria-invalid="true"] {
+  border-color: #e53e3e;
+  background: #fff5f5;
+}
+
+.input-wrap input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(229,62,62,.15);
+}
+
+/* ---- Field Icon ---- */
+.field-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: var(--neutral-400);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+  transition: stroke .2s;
+}
+
+.input-wrap:focus-within .field-icon {
+  stroke: var(--rose);
+}
+
+/* ---- Error text ---- */
+.field-error {
+  margin: 5px 0 0 4px;
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: #e53e3e;
+  min-height: 16px;
+}
+.field-error:empty { display: none; }
+
+/* ---- Password toggle button ---- */
+.toggle-pw {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.toggle-pw:hover { background: var(--pink-50); }
+.toggle-pw:focus-visible { outline: 2px solid var(--rose); }
+
+.toggle-pw svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--neutral-400);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke .15s;
+}
+
+.toggle-pw:hover svg { stroke: var(--rose); }
+.toggle-pw .eye { display: none; }
+.toggle-pw[aria-pressed="true"] .eye { display: block; }
+.toggle-pw[aria-pressed="true"] .eye-off { display: none; }
+
+/* ===================================================
+   PASSWORD STRENGTH
+   =================================================== */
+.strength-bar {
+  height: 4px;
+  background: var(--neutral-100);
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 4px;
+  transition: width .35s ease, background .35s;
+  background: var(--neutral-200);
+}
+
+.strength-fill.weak   { background: #e53e3e; }
+.strength-fill.fair   { background: #ed8936; }
+.strength-fill.good   { background: #38a169; }
+.strength-fill.strong { background: #3182ce; }
+
+.strength-label {
+  font-size: 11px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+.strength-label.weak   { color: #e53e3e; }
+.strength-label.fair   { color: #ed8936; }
+.strength-label.good   { color: #38a169; }
+.strength-label.strong { color: #3182ce; }
+
+/* ===================================================
+   TERMS CHECKBOX
+   =================================================== */
+.terms-wrap {
+  margin: 4px 0 18px;
+}
+
+.custom-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.custom-check input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkmark {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border: 2px solid var(--neutral-200);
+  border-radius: 5px;
+  background: var(--white);
+  display: grid;
+  place-items: center;
+  transition: border-color .2s, background .2s;
+}
+
+.checkmark::after {
+  content: '';
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid var(--white);
+  border-bottom: 2px solid var(--white);
+  transform: rotate(-45deg) scale(0);
+  margin-top: -2px;
+  transition: transform .15s;
+}
+
+.custom-check input:checked ~ .checkmark {
+  background: var(--rose);
+  border-color: var(--rose);
+}
+
+.custom-check input:checked ~ .checkmark::after {
+  transform: rotate(-45deg) scale(1);
+}
+
+.custom-check input:focus-visible ~ .checkmark {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+.check-text {
+  font-size: 12.5px;
+  color: var(--neutral-600);
+  line-height: 1.5;
+}
+
+.link-pink {
+  color: var(--rose);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color .15s;
+}
+.link-pink:hover {
+  color: var(--maroon);
+  text-decoration: underline;
+}
+
+/* ===================================================
+   FORM ALERT
+   =================================================== */
+.form-alert {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.4;
+  animation: fadeIn .3s ease;
+}
+.form-alert:empty { display: none; }
+.form-alert.is-error   { background: #fff5f5; color: #c53030; border: 1px solid #fed7d7; }
+.form-alert.is-success { background: #f0fff4; color: #276749; border: 1px solid #c6f6d5; }
+.form-alert.is-info    { background: var(--pink-50); color: var(--rose); border: 1px solid var(--pink-100); }
+
+/* ===================================================
+   BUTTONS
+   =================================================== */
+
+/* Next button */
+.btn-next {
+  width: 100%;
+  height: 50px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--rose) 0%, var(--maroon) 100%);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: transform .2s, box-shadow .2s, filter .2s;
+}
+.btn-next svg {
+  width: 18px;
+  height: 18px;
+  transition: transform .2s;
+}
+.btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-btn-hover);
+  filter: brightness(1.06);
+}
+.btn-next:hover svg { transform: translateX(3px); }
+.btn-next:active { transform: translateY(0); }
+.btn-next:focus-visible { outline: 3px solid rgba(214,63,122,.4); outline-offset: 2px; }
+
+/* Button row */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* Back button */
+.btn-back {
+  height: 50px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--neutral-600);
+  background: var(--neutral-100);
+  border: 1.5px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all .2s;
+  flex-shrink: 0;
+}
+.btn-back svg { width: 16px; height: 16px; }
+.btn-back:hover {
+  background: var(--pink-50);
+  border-color: var(--pink-200);
+  color: var(--rose);
+}
+.btn-back:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+
+/* Register / Submit button */
+.btn-register {
+  flex: 1;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--rose) 0%, var(--maroon) 100%);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: transform .2s, box-shadow .2s, filter .2s;
+}
+.btn-register svg { width: 18px; height: 18px; transition: transform .2s; }
+.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-btn-hover);
+  filter: brightness(1.06);
+}
+.btn-register:hover svg { transform: translateX(3px); }
+.btn-register:active { transform: translateY(0); }
+.btn-register:disabled { opacity: .65; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-register:focus-visible { outline: 3px solid rgba(214,63,122,.4); outline-offset: 2px; }
+
+/* ===================================================
+   DIVIDER & SOCIAL
+   =================================================== */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0 14px;
+  font-size: 11.5px;
+  color: var(--neutral-400);
+  font-weight: 500;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--neutral-200);
+}
+
+.social-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.btn-social {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-900);
+  background: var(--white);
+  border: 1.5px solid var(--neutral-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-social:hover {
+  background: var(--pink-50);
+  border-color: var(--pink-200);
+  transform: translateY(-1px);
+}
+.btn-social:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+
+/* ===================================================
+   HAVE AN ACCOUNT
+   =================================================== */
+.have-account {
+  text-align: center;
+  font-size: 13px;
+  color: var(--neutral-400);
+}
+.have-account .link-pink {
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+/* ===================================================
+   MULTI-STEP ANIMATIONS
+   =================================================== */
+.form-step {
+  animation: stepFadeIn .35s ease;
+}
+
+.form-step.hidden { display: none; }
+
+.form-step.slide-out {
+  animation: slideOut .28s ease forwards;
+}
+
+.form-step.slide-in {
+  animation: slideIn .35s ease forwards;
+}
+
+@keyframes stepFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-30px); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ===================================================
+   RESPONSIVE
+   =================================================== */
+@media (max-width: 1100px) {
+  .page-wrapper { grid-template-columns: 42% 58%; }
+}
+
+@media (max-width: 860px) {
+  .page-wrapper { grid-template-columns: 1fr; }
+  html, body { overflow: auto; }
+
+  .image-panel {
+    display: block;
+    height: 240px;
+    flex-shrink: 0;
+  }
+
+  .overlay-brand { display: none; }
+
+  .quote-text { font-size: 15px; }
+
+  .mobile-brand { display: flex; }
+
+  .form-scroll-area { overflow-y: visible; }
+
+  .form-container { padding: 28px 24px 40px; }
+}
+
+@media (max-width: 480px) {
+  .page-title { font-size: 24px; }
+  .image-panel { height: 200px; }
+  .social-row { grid-template-columns: 1fr; }
+  .form-container { padding: 20px 18px 36px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
