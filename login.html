@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login | WEDORA</title>
+  <meta name="description"
+    content="Login to your WEDORA account and continue planning your perfect wedding.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+
+  <!-- ===== Top Navigation Header ===== -->
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="WEDORA home">
+      <img src="images/logo.png" alt="WEDORA - Plan Your Perfect Beginning" width="auto" height="66">
+    </a>
+
+    <nav class="main-nav" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#about">About Us</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="login-link" href="login.html">Login</a>
+      <a class="btn-small" href="register.html">Get Started</a>
+    </div>
+  </header>
+
+  <!-- ===== Hero Section with Couple Background & Floating Login Card ===== -->
+  <main class="hero">
+
+    <!-- Background Creative Romantic Elements -->
+    <div class="bg-decorations" aria-hidden="true">
+      <div class="bokeh b1"></div>
+      <div class="bokeh b2"></div>
+      <div class="bokeh b3"></div>
+      <div class="bokeh b4"></div>
+      <div class="bokeh b5"></div>
+      <div class="sparkle s1">&#10022;</div>
+      <div class="sparkle s2">&#10023;</div>
+      <div class="sparkle s3">&#10022;</div>
+      <div class="sparkle s4">&#10023;</div>
+      <div class="sparkle s5">&#10022;</div>
+      <div class="sparkle s6">&#10023;</div>
+      <div class="petal p1"></div>
+      <div class="petal p2"></div>
+      <div class="petal p3"></div>
+      <div class="petal p4"></div>
+    </div>
+
+    <!-- Floating White Card -->
+    <section class="card" aria-labelledby="page-title">
+      <h1 class="title" id="page-title">Welcome Back</h1>
+      <p class="subtitle">Login to WEDORA and continue planning your perfect wedding</p>
+
+      <form id="loginForm" novalidate>
+
+        <!-- Email Address -->
+        <div class="field">
+          <label for="email">Email Address</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-10 6L2 7" />
+            </svg>
+            <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email"
+              maxlength="150" aria-describedby="email-error">
+          </div>
+          <p class="error" id="email-error"></p>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="10" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+            <input type="password" id="password" name="password" placeholder="Enter your password"
+              autocomplete="current-password" maxlength="72" aria-describedby="password-error">
+            <button type="button" class="toggle-pw" data-target="password" aria-label="Show password"
+              aria-pressed="false">
+              <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+              <svg class="eye" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+          </div>
+          <p class="error" id="password-error"></p>
+        </div>
+
+        <!-- Remember Me + Forgot Password -->
+        <div class="login-extras">
+          <label class="remember-wrap">
+            <input type="checkbox" id="remember_me" name="remember_me">
+            <span class="remember-label">Remember me</span>
+          </label>
+          <a href="#" class="forgot-link" id="forgotPasswordLink">Forgot password?</a>
+        </div>
+
+        <!-- Server / Status Alert -->
+        <div class="form-alert" id="formAlert" role="alert" aria-live="polite"></div>
+
+        <!-- Login Button -->
+        <button type="submit" class="btn-primary" id="loginBtn">
+          <span class="btn-label">Login</span>
+          <svg viewBox="0 0 48 24" aria-hidden="true">
+            <path d="M2 12h42M35 4l9 8-9 8" />
+          </svg>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider"><span>or</span></div>
+
+      <!-- Social Logins -->
+      <button type="button" class="btn-social" data-provider="google">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335"
+            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+          <path fill="#4285F4"
+            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+          <path fill="#FBBC05"
+            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+          <path fill="#34A853"
+            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+        </svg>
+        Continue with Google
+      </button>
+
+      <button type="button" class="btn-social" data-provider="facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#1877F2"
+            d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.5 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z" />
+        </svg>
+        Continue with Facebook
+      </button>
+
+      <!-- Register link -->
+      <p class="have-account">Don't have an account? <a href="register.html">Register</a></p>
+    </section>
+
+  </main>
+
+  <!-- ===== Social Login Modal (Google & Facebook) ===== -->
+  <div class="modal-backdrop" id="socialModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="socialModalTitle">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-provider-icon" id="modalProviderIcon"></div>
+          <div>
+            <h2 class="modal-title" id="socialModalTitle">Continue with Google</h2>
+            <p class="modal-subtitle" id="socialModalSubtitle">Choose an account to login to WEDORA</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close" id="closeSocialModal" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="social-accounts" id="socialAccountsList"></div>
+
+        <div class="social-divider"><span>or use another account</span></div>
+
+        <form id="customSocialForm" class="custom-social-form" novalidate>
+          <div class="social-field">
+            <label for="social_email">Email Address</label>
+            <input type="email" id="social_email" name="social_email" placeholder="Enter your email" required>
+          </div>
+          <button type="submit" class="btn-social-submit" id="btnSocialSubmit">
+            <span class="social-submit-text">Continue with Account</span>
+          </button>
+        </form>
+
+        <div class="social-alert" id="socialAlert" role="alert"></div>
+      </div>
+
+      <div class="modal-footer">
+        <p>To continue, <span id="footerProviderName">Google</span> will verify your identity. See our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Forgot Password Modal ===== -->
+  <div class="modal-backdrop" id="forgotModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="forgotModalTitle">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-provider-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#862947" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="11" width="14" height="10" rx="2"/>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="modal-title" id="forgotModalTitle">Reset Password</h2>
+            <p class="modal-subtitle">Enter your email to receive a reset link</p>
+          </div>
+        </div>
+        <button type="button" class="modal-close" id="closeForgotModal" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="forgotForm" class="custom-social-form" novalidate>
+          <div class="social-field">
+            <label for="forgot_email">Email Address</label>
+            <input type="email" id="forgot_email" name="forgot_email" placeholder="Enter your registered email" required>
+          </div>
+          <button type="submit" class="btn-social-submit" id="btnForgotSubmit">
+            <span>Send Reset Link</span>
+          </button>
+        </form>
+        <div class="social-alert" id="forgotAlert" role="alert"></div>
+      </div>
+
+      <div class="modal-footer">
+        <p>We will send a password reset link to your registered email address.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+
+</html>
