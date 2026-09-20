@@ -1,0 +1,81 @@
+/* ==========================================================
+   WEDORA – login.css
+   Login-page specific styles (extends style.css)
+   ========================================================== */
+
+/* ========== Remember Me + Forgot Password Row ========== */
+.login-extras {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  margin-bottom: 2px;
+}
+
+.remember-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.remember-wrap input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  background: #ffffff;
+  border: 1.3px solid #b5b5ba;
+  border-radius: 4px;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: background 0.12s, border-color 0.12s;
+  flex-shrink: 0;
+}
+
+.remember-wrap input[type="checkbox"]::after {
+  content: '';
+  width: 8px;
+  height: 4.5px;
+  margin-top: -2px;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(-45deg) scale(0);
+  transition: transform 0.12s;
+}
+
+.remember-wrap input[type="checkbox"]:checked {
+  background: var(--maroon);
+  border-color: var(--maroon);
+}
+
+.remember-wrap input[type="checkbox"]:checked::after {
+  transform: rotate(-45deg) scale(1);
+}
+
+.remember-wrap input[type="checkbox"]:focus-visible {
+  outline: 1.5px solid var(--maroon);
+  outline-offset: 1px;
+}
+
+.remember-label {
+  font-size: 12px;
+  color: #3a3a3c;
+  cursor: pointer;
+  line-height: 1.25;
+}
+
+.forgot-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--maroon);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+  color: var(--maroon-dark);
+}
