@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard | WEDORA</title>
+  <meta name="description" content="Your WEDORA wedding planning dashboard.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="images/logo.png" alt="WEDORA - Plan Your Perfect Beginning">
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Dashboard navigation">
+      <a href="dashboard.html" class="nav-item is-active">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="wedding-details.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg>
+        Wedding Details
+      </a>
+      <a href="tasks.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1z"/><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 12h6M9 16h6"/></svg>
+        Tasks
+      </a>
+      <a href="budget.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Budget
+      </a>
+      <a href="vendors.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9"/><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 20v-5h6v5"/></svg>
+        Vendors
+      </a>
+      <a href="guests.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="18" cy="9" r="2.5"/><path d="M15.5 20c.3-2.5 2-4.5 4.5-4.9"/></svg>
+        Guests
+      </a>
+      <a href="profile.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        Profile
+      </a>
+      <a href="faq.html" class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.1-1.7 2.5"/><path d="M12 17h.01"/></svg>
+        FQA
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button type="button" class="btn-logout" id="logoutBtn">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log out
+      </button>
+    </div>
+  </aside>
+
+  <!-- ===== Main content ===== -->
+  <div class="main">
+    <div class="topbar">
+      <button type="button" class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+
+    <div class="content">
+
+      <div id="dashStatus" class="dash-status">Loading your dashboard…</div>
+
+      <div id="dashBody" style="display:none;">
+
+        <!-- ===== Welcome banner ===== -->
+        <section class="welcome-banner">
+          <div class="welcome-text">
+            <p class="eyebrow">Welcome Back ,</p>
+            <h1 id="coupleName">—</h1>
+          </div>
+          <div class="date-card">
+            <div>
+              <div class="label">Wedding Date</div>
+              <div class="date" id="weddingDate">—</div>
+            </div>
+            <div class="divider-line"></div>
+            <div>
+              <div class="days" id="daysToGo">—</div>
+              <div class="days-label">Days to go!</div>
+            </div>
+            <div class="calendar-icon">
+              <svg viewBox="0 0 40 40" width="38" height="38">
+                <rect x="4" y="7" width="32" height="29" rx="4" fill="#fff" stroke="#862947" stroke-width="1.6"/>
+                <rect x="4" y="7" width="32" height="8" rx="4" fill="#862947"/>
+                <circle cx="12" cy="6" r="2.2" fill="#862947"/>
+                <circle cx="28" cy="6" r="2.2" fill="#862947"/>
+                <g fill="#c9718b">
+                  <rect x="9" y="19" width="5" height="5" rx="1"/>
+                  <rect x="17.5" y="19" width="5" height="5" rx="1"/>
+                  <rect x="26" y="19" width="5" height="5" rx="1"/>
+                  <rect x="9" y="27" width="5" height="5" rx="1"/>
+                </g>
+                <rect x="17.5" y="27" width="5" height="5" rx="1" fill="#862947"/>
+              </svg>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Stat cards ===== -->
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-head">Tasks Completed</div>
+            <div class="stat-value" id="tasksValue">0 / 0</div>
+            <div class="progress-track"><div class="progress-fill" id="tasksBar" style="width:0%"></div></div>
+            <div class="stat-sub"><span></span><span id="tasksPct">0%</span></div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-head">Budget Used</div>
+            <div class="stat-value" id="budgetSpentValue">Rs. 0</div>
+            <div class="progress-track"><div class="progress-fill" id="budgetBar" style="width:0%"></div></div>
+            <div class="stat-sub"><span id="budgetCaption">0% of Rs 0</span><span id="budgetPct">0%</span></div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-head">
+              Budget Used
+              <svg class="icon-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="7" r="2.4"/></svg>
+            </div>
+            <div class="stat-value" id="guestsValue">0</div>
+            <div class="stat-caption">Confirmed</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-head">
+              Budget Used
+              <svg class="icon-store" viewBox="0 0 24 24"><path d="M3 9l1.3-4.5A1 1 0 0 1 5.3 4h13.4a1 1 0 0 1 1 .8L21 9"/><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 20v-5h6v5"/></svg>
+            </div>
+            <div class="stat-value" id="vendorsValue">0</div>
+            <div class="stat-caption">Saved</div>
+          </div>
+        </section>
+
+        <!-- ===== Two column panels ===== -->
+        <section class="panels-grid">
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Upcoming Tasks</h2>
+              <a href="#">View All</a>
+            </div>
+            <div class="task-list" id="taskList">
+              <p class="empty-note">No upcoming tasks yet.</p>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel">
+              <div class="panel-head">
+                <h2>Budget Overview</h2>
+                <a href="#">View Report</a>
+              </div>
+              <div class="budget-body">
+                <div class="donut-wrap" id="donutChart">
+                  <div class="donut-hole">
+                    <span class="label">Rs.</span>
+                    <span class="value" id="donutSpent">0</span>
+                    <span class="label">Spent</span>
+                  </div>
+                </div>
+                <div class="budget-legend">
+                  <div class="legend-row">
+                    <span class="legend-dot total"></span>
+                    <span class="legend-text">Total Budget</span>
+                    <span class="legend-amount" id="legendTotal">Rs. 0</span>
+                  </div>
+                  <div class="legend-row">
+                    <span class="legend-dot spent"></span>
+                    <span class="legend-text">Spent</span>
+                    <span class="legend-amount" id="legendSpent">Rs. 0</span>
+                  </div>
+                  <div class="legend-row">
+                    <span class="legend-dot remaining"></span>
+                    <span class="legend-text">Remaining</span>
+                    <span class="legend-amount" id="legendRemaining">Rs. 0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel payments-panel">
+              <div class="panel-head">
+                <h2>Upcoming Payments</h2>
+                <a href="#">View All</a>
+              </div>
+              <div id="paymentsList">
+                <p class="empty-note">No upcoming payments.</p>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+
+</html>
