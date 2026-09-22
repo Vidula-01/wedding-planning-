@@ -25,6 +25,31 @@ CREATE TABLE IF NOT EXISTS users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------
+-- Guests table – stores wedding guest information
+-- (previously in a separate guests_table.sql; now merged in
+-- here so everything lives in wedora.sql / wedora_db)
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS guests (
+  id              INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+  user_id         INT UNSIGNED   NOT NULL,
+  name            VARCHAR(150)   NOT NULL,
+  side            ENUM('Bride Side','Groom Side','Both')    NOT NULL DEFAULT 'Bride Side',
+  category        ENUM('Family','Friend','Colleague','Other') NOT NULL DEFAULT 'Family',
+  invitation      ENUM('Sent','Not Sent')                   NOT NULL DEFAULT 'Not Sent',
+  rsvp            ENUM('Confirmed','Pending','Not Attending') NOT NULL DEFAULT 'Pending',
+  phone           VARCHAR(20)    NULL,
+  email           VARCHAR(150)   NULL,
+  notes           TEXT           NULL,
+  created_at      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY fk_guests_user (user_id),
+  CONSTRAINT fk_guests_user
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------
 -- User sessions table – optional, tracks active logins
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS user_sessions (
