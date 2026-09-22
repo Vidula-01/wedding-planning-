@@ -1,0 +1,528 @@
+/* ==========================================================
+   WEDORA - Dashboard
+   ========================================================== */
+
+:root {
+  --maroon:      #862947;
+  --maroon-dark: #6c1f39;
+  --plum:        #8a3a58;
+  --rose-bg:     #f9cdd0;
+  --rose-soft:   #fbe3e5;
+  --card-bg:     #ffffff;
+  --ink:         #1c1c1e;
+  --muted:       #8e8e93;
+  --line:        #e2e2e7;
+  --success:     #1f7a4d;
+
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: #fff;
+  display: flex;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+
+/* ===================== Sidebar ===================== */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--rose-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 26px 20px 24px;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  transition: transform 0.25s ease;
+}
+
+.sidebar-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+.sidebar-logo img {
+  width: 150px;
+  height: auto;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--maroon-dark);
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+.nav-item svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nav-item:hover {
+  background: rgba(134, 41, 71, 0.08);
+}
+.nav-item.is-active {
+  background: var(--maroon);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(134, 41, 71, 0.3);
+}
+
+.sidebar-footer {
+  margin-top: 18px;
+}
+
+.btn-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 24px;
+  border: 1.5px solid var(--maroon);
+  background: #fff;
+  color: var(--maroon);
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-logout:hover {
+  background: var(--maroon);
+  color: #fff;
+}
+.btn-logout svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+/* ===================== Main area ===================== */
+.main {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  padding: 18px 40px 0;
+}
+
+.hamburger {
+  border: none;
+  background: transparent;
+  padding: 6px;
+  border-radius: 8px;
+  color: var(--ink);
+}
+.hamburger svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.hamburger:hover { background: #f4f1f2; }
+
+.content {
+  padding: 14px 40px 40px;
+  flex: 1;
+}
+
+/* ===================== Welcome banner ===================== */
+.welcome-banner {
+  position: relative;
+  background: linear-gradient(120deg, var(--rose-bg) 0%, #fbdde0 100%);
+  border-radius: 22px;
+  padding: 26px 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+
+.welcome-banner::after {
+  content: '🌸';
+  position: absolute;
+  right: 24px;
+  bottom: -18px;
+  font-size: 90px;
+  opacity: 0.35;
+  filter: saturate(1.1);
+  pointer-events: none;
+}
+
+.welcome-text .eyebrow {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4a2634;
+  margin-bottom: 2px;
+}
+.welcome-text h1 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--maroon-dark);
+}
+
+.date-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 8px 22px rgba(134, 41, 71, 0.12);
+  z-index: 1;
+}
+.date-card .label {
+  font-size: 12.5px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.date-card .date {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.date-card .divider-line {
+  width: 1px;
+  align-self: stretch;
+  background: var(--line);
+}
+.date-card .days {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--maroon);
+  line-height: 1;
+}
+.date-card .days-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.date-card .calendar-icon {
+  font-size: 30px;
+  line-height: 1;
+}
+
+/* ===================== Stat cards ===================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.stat-card .stat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: #48484a;
+  margin-bottom: 10px;
+}
+.stat-card .stat-head svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--maroon);
+  fill: none;
+  stroke-width: 1.8;
+}
+.stat-card .stat-head svg.icon-people {
+  stroke: none;
+  fill: #7c3aed;
+}
+.stat-card .stat-head svg.icon-store {
+  stroke: #3b82f6;
+  fill: none;
+  stroke-width: 1.8;
+}
+.stat-card .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.stat-card .stat-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+}
+.stat-card .progress-track {
+  height: 6px;
+  border-radius: 4px;
+  background: #f1e6e8;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.stat-card .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--maroon), var(--plum));
+  border-radius: 4px;
+}
+.stat-card .stat-caption {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ===================== Two column panels ===================== */
+.panels-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.panel-head h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.panel-head a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--maroon);
+}
+.panel-head a:hover { text-decoration: underline; }
+
+/* Task list */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.task-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--maroon);
+  flex-shrink: 0;
+}
+.task-dot.is-filled { background: var(--maroon); }
+.task-title {
+  flex: 1;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.task-date {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.empty-note {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 8px 0;
+}
+
+/* Budget overview */
+.budget-body {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+.donut-wrap {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.donut-hole {
+  position: absolute;
+  inset: 16px;
+  background: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.donut-hole .label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.donut-hole .value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.budget-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-width: 160px;
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-dot.total { background: var(--maroon-dark); }
+.legend-dot.spent { background: var(--maroon); }
+.legend-dot.remaining { background: #f2c9cf; }
+.legend-text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #48484a;
+}
+.legend-amount {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Upcoming payments */
+.payments-panel {
+  margin-top: 18px;
+}
+.payment-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f2f0f1;
+}
+.payment-row:last-child { border-bottom: none; }
+.payment-name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.payment-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--maroon);
+}
+.payment-date {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ===================== Loading / error ===================== */
+.dash-status {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 1100px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .panels-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 50;
+    transform: translateX(-100%);
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+  }
+  .sidebar.is-open { transform: translateX(0); }
+  .topbar, .content { padding-left: 20px; padding-right: 20px; }
+  .welcome-banner { flex-direction: column; align-items: flex-start; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 520px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .date-card { flex-wrap: wrap; }
+}
