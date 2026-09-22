@@ -68,6 +68,21 @@ CREATE TABLE IF NOT EXISTS user_sessions (
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+
+-- ----------------------------------------------------------
+-- Newsletter subscribers – emails captured on the home page
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+  id            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+  email         VARCHAR(150)  NOT NULL,
+  ip_address    VARCHAR(45)   NULL,
+  subscribed_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_subscriber_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
 -- ----------------------------------------------------------
 -- Password reset tokens table – for forgot password feature
 -- ----------------------------------------------------------
