@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WEDORA | Plan Your Perfect Beginning</title>
+  <meta name="description"
+    content="WEDORA is the all-in-one wedding planning app for Sri Lankan couples. Track tasks, manage your budget, handle guests and connect with vendors - all in one place.">
+
+  <link rel="icon" href="images/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/home.css?v=1.0">
+</head>
+
+<body>
+
+  <a class="skip-link" href="#hero-title">Skip to main content</a>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="site-header" id="siteHeader">
+    <a class="brand" href="index.html" aria-label="WEDORA home">
+      <img src="images/logo.png" alt="WEDORA - Plan Your Perfect Beginning" height="64">
+    </a>
+
+    <nav class="main-nav" id="mainNav" aria-label="Main">
+      <a href="#hero" class="is-active" data-nav>Home</a>
+      <a href="#features" data-nav>Features</a>
+      <a href="#faq" data-nav>FAQ</a>
+      <a href="#about" data-nav>About Us</a>
+    </nav>
+
+    <div class="header-actions" id="headerActions">
+      <a class="login-link" href="login.html">Login</a>
+      <a class="btn-small" href="register.html">Get Started</a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="hero">
+
+      <!-- Rotating background slideshow -->
+      <div class="hero-slides" id="heroSlides" aria-hidden="true">
+        <div class="hero-slide is-active" style="background-image:url('images/hero-1.jpg')"></div>
+        <div class="hero-slide" style="background-image:url('images/slide-2.jpg')"></div>
+        <div class="hero-slide" style="background-image:url('images/slide-3.jpg')"></div>
+        <div class="hero-slide" style="background-image:url('images/slide-4.jpg')"></div>
+        <div class="hero-slide" style="background-image:url('images/slide-5.jpg')"></div>
+      </div>
+      <div class="hero-scrim" aria-hidden="true"></div>
+
+      <div class="hero-inner">
+        <h1 class="hero-title" id="hero-title">
+          Plan Your Dream<br>Wedding with <span class="brandname">WEDORA</span>
+        </h1>
+
+        <p class="hero-text">
+          The all-in-one wedding planning app for Sri Lankan couples. Track tasks,
+          manage your budget, handle guests and connect with vendors &ndash; all in one place.
+        </p>
+
+        <div class="hero-cta">
+          <a class="btn-primary" href="register.html">
+            Start Planning Now
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 12h15M13 6l6 6-6 6" />
+            </svg>
+          </a>
+          <button type="button" class="btn-ghost" id="learnMoreBtn" aria-haspopup="dialog">Learn More</button>
+        </div>
+      </div>
+
+      <!-- Slideshow controls -->
+      <button type="button" class="slide-arrow prev" id="slidePrev" aria-label="Previous photo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+      </button>
+      <button type="button" class="slide-arrow next" id="slideNext" aria-label="Next photo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+      </button>
+
+      <div class="slide-dots" id="slideDots" role="tablist" aria-label="Hero photo">
+        <button role="tab" aria-label="Photo 1" aria-selected="true" class="is-active"></button>
+        <button role="tab" aria-label="Photo 2" aria-selected="false"></button>
+        <button role="tab" aria-label="Photo 3" aria-selected="false"></button>
+        <button role="tab" aria-label="Photo 4" aria-selected="false"></button>
+        <button role="tab" aria-label="Photo 5" aria-selected="false"></button>
+      </div>
+    </section>
+
+    <!-- ==================== QUICK FEATURE STRIP ==================== -->
+    <div class="strip-wrap">
+      <ul class="quick-strip">
+        <li>
+          <span class="strip-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="3" width="14" height="18" rx="2" />
+              <path d="M9 3h6v3H9z" />
+              <path d="m9 13 2 2 4-4" />
+            </svg>
+          </span>
+          <span class="strip-copy"><strong>Task Management</strong><small>Never miss a task</small></span>
+        </li>
+        <li>
+          <span class="strip-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
+              <path d="M8 9V6a4 4 0 0 1 8 0v3" />
+              <path d="M12 13v4M10.5 14h3" />
+            </svg>
+          </span>
+          <span class="strip-copy"><strong>Budget Tracking</strong><small>Stay on budget</small></span>
+        </li>
+        <li>
+          <span class="strip-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1" />
+            </svg>
+          </span>
+          <span class="strip-copy"><strong>Vendor Contacts</strong><small>Everyone in one list</small></span>
+        </li>
+        <li>
+          <span class="strip-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="9" cy="8" r="3.4" />
+              <path d="M2.5 20v-1a5.5 5.5 0 0 1 5.5-5.5h2" />
+              <path d="M15 12h6v9h-6z" />
+              <path d="M15 16h6" />
+            </svg>
+          </span>
+          <span class="strip-copy"><strong>Guest Management</strong><small>Track &amp; organise</small></span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ==================== FEATURES ==================== -->
+    <section class="section features" id="features">
+      <div class="section-head">
+        <h2>Everything a Sri Lankan wedding needs</h2>
+        <p>From the poruwa ceremony to the homecoming, WEDORA keeps every moving part
+          of your big day in one calm, shared place.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <span class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="3" width="14" height="18" rx="2" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+          </span>
+          <h3>Checklists that know your timeline</h3>
+          <p>Tasks appear month by month from engagement to homecoming, so you always
+            know what needs attention this week.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 17V7l6 4 3-5 3 5 6-4v10z" />
+              <path d="M3 20h18" />
+            </svg>
+          </span>
+          <h3>A budget in rupees, not guesses</h3>
+          <p>Set a total, split it across hall, catering, photography and dresses, and
+            watch every advance payment update the balance instantly.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="9" cy="8" r="3.4" />
+              <path d="M2.5 20v-1a5.5 5.5 0 0 1 5.5-5.5h2" />
+              <path d="M15 12h6v9h-6zM15 16h6" />
+            </svg>
+          </span>
+          <h3>Guest lists and seating</h3>
+          <p>Collect RSVPs, record dietary needs, group families by table and export a
+            clean list for the hall manager.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 5h16v14H4z" />
+              <path d="M4 9h16M9 19V9" />
+            </svg>
+          </span>
+          <h3>Vendors kept together</h3>
+          <p>Hotels, dancers, salons, photographers and poruwa decorators &ndash; with
+            quotes, phone numbers and contract dates beside each name.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16" rx="2" />
+              <path d="M8 3v4M16 3v4M3 10h18" />
+            </svg>
+          </span>
+          <h3>One shared calendar</h3>
+          <p>Fittings, tastings, nekath times and payment deadlines sit on a single
+            calendar both partners can see.</p>
+        </article>
+
+        <article class="feature-card">
+          <span class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 20s-7-4.6-7-9.4A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.6C19 15.4 12 20 12 20z" />
+            </svg>
+          </span>
+          <h3>Plan together, from anywhere</h3>
+          <p>Invite your partner or your family to the same plan. Changes show up for
+            everyone, so nobody books the same thing twice.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== HOW IT WORKS ==================== -->
+    <section class="section steps-section">
+      <div class="section-head">
+        <h2>Three steps to a plan you trust</h2>
+        <p>Most couples have their full wedding plan running within an evening.</p>
+      </div>
+
+      <ol class="steps">
+        <li>
+          <span class="step-no">1</span>
+          <h3>Create your free account</h3>
+          <p>Tell us your names and your wedding date. That date drives every checklist
+            and reminder that follows.</p>
+        </li>
+        <li>
+          <span class="step-no">2</span>
+          <h3>Set your budget and guest count</h3>
+          <p>WEDORA suggests a rupee split across the usual categories, which you can
+            adjust to match your own priorities.</p>
+        </li>
+        <li>
+          <span class="step-no">3</span>
+          <h3>Work the plan week by week</h3>
+          <p>Tick off tasks, log vendor payments and watch the countdown. Everything
+            stays in sync for both of you.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ==================== ABOUT ==================== -->
+    <section class="section about" id="about">
+      <div class="about-grid">
+        <div class="about-copy">
+          <h2>Built in Sri Lanka, for Sri Lankan weddings</h2>
+          <p>WEDORA started because planning a wedding here means juggling two ceremonies,
+            three guest lists and a dozen WhatsApp threads. Spreadsheets lose track of
+            advances. Notebooks stay at home. Nothing was made for the way couples here
+            actually plan.</p>
+          <p>So we built one place for all of it &ndash; the poruwa and the reception, the
+            hall advance and the homecoming, the aunt who must be seated near the front.
+            WEDORA is free to start, works on the phone in your hand, and keeps your plan
+            private to the people you invite into it.</p>
+
+          <dl class="stats" id="liveStats">
+            <div>
+              <dt>Couples planning</dt>
+              <dd data-stat="couples">&mdash;</dd>
+            </div>
+            <div>
+              <dt>Planning tools</dt>
+              <dd data-stat="tools">4</dd>
+            </div>
+            <div>
+              <dt>Cost to start</dt>
+              <dd data-stat="price">Free</dd>
+            </div>
+          </dl>
+          <p class="stats-note" id="statsNote">Live from the WEDORA database.</p>
+        </div>
+
+        <figure class="about-figure">
+          <img src="images/hero-3.jpg" alt="Soft ivory and blush florals from the WEDORA design palette" loading="lazy">
+          <figcaption>Plan Your Perfect Beginning.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ==================== FAQ ==================== -->
+    <section class="section faq" id="faq">
+      <div class="section-head">
+        <h2>Questions couples ask us</h2>
+        <p>Still unsure about something? Write to hello@wedora.lk and we will answer.</p>
+      </div>
+
+      <div class="faq-list" id="faqList">
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false">
+              Does WEDORA cost anything?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-a">
+            <p>No. Creating an account and using the task, budget, guest and vendor tools
+              is free. If we add paid extras later, everything you have already built stays
+              yours and stays free.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false">
+              Can my partner and I use the same plan?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-a">
+            <p>Yes. Invite your partner by email and you share one plan. Both of you see
+              the same tasks, the same budget and the same guest list, updated live.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false">
+              Does it handle two ceremonies?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-a">
+            <p>It does. Keep separate guest lists, budgets and timelines for the wedding
+              day and the homecoming, and view the combined cost whenever you need it.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false">
+              Where is my information stored?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-a">
+            <p>In our own database. Passwords are hashed and never stored as plain text,
+              and your plan is visible only to the people you invite.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false">
+              I have already started on a spreadsheet. Can I move it across?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-a">
+            <p>Yes. Paste your guest list straight into the guest page and it fills the
+              table for you. Budget lines can be added the same way.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h3>
+            <button type="button" class="faq-q" aria-expanded="false">
+              Does it work on a phone?
+              <span class="faq-mark" aria-hidden="true"></span>
+            </button>
+          </h3>
+          <div class="faq-a">
+            <p>WEDORA runs in any modern browser and is built for small screens first, so
+              you can check a vendor quote while you are standing in the hall.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CTA + NEWSLETTER ==================== -->
+    <section class="cta-band">
+      <div class="cta-inner">
+        <h2>Your wedding date is already moving. Start today.</h2>
+        <p>Create a free account, or leave your email and we will send one short note
+          with planning tips for Sri Lankan couples.</p>
+
+        <div class="cta-actions">
+          <a class="btn-primary btn-on-dark" href="register.html">Create my free account</a>
+        </div>
+
+        <form class="subscribe" id="subscribeForm" novalidate>
+          <label class="sr-only" for="subEmail">Email address</label>
+          <input type="email" id="subEmail" name="email" placeholder="you@example.com" autocomplete="email"
+            maxlength="150" required>
+          <button type="submit" id="subBtn">Send me tips</button>
+        </form>
+        <p class="sub-msg" id="subMsg" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="images/logo.png" alt="WEDORA" height="58">
+        <p>The all-in-one wedding planning app for Sri Lankan couples.</p>
+      </div>
+
+      <nav aria-label="Product">
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+        <a href="register.html">Create account</a>
+        <a href="login.html">Login</a>
+      </nav>
+
+      <nav aria-label="Company">
+        <h4>Company</h4>
+        <a href="#about">About us</a>
+        <a href="mailto:hello@wedora.lk">hello@wedora.lk</a>
+        <a href="tel:+94112345678">+94 11 234 5678</a>
+      </nav>
+
+      <div class="foot-note">
+        <h4>Where we are</h4>
+        <p>Kandy, Sri Lanka<br>Weekdays, 9am &ndash; 6pm</p>
+      </div>
+    </div>
+
+    <p class="copyright">&copy; <span id="year">2026</span> WEDORA. Plan Your Perfect Beginning.</p>
+  </footer>
+
+  <!-- ==================== LEARN MORE MODAL ==================== -->
+  <div class="modal-backdrop" id="learnModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+      <button type="button" class="modal-close" id="modalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+
+      <div class="modal-head">
+        <img src="images/logo.png" alt="" height="56">
+        <h2 id="modalTitle">What is WEDORA?</h2>
+      </div>
+
+      <div class="modal-body" id="modalDesc">
+        <p>WEDORA is a wedding planning app made for couples in Sri Lanka. Instead of a
+          spreadsheet for the budget, a notebook for the guests and a phone gallery full of
+          vendor quotes, you keep the whole wedding in one plan that you and your partner
+          share.</p>
+
+        <ul class="modal-list">
+          <li>
+            <strong>Tasks</strong>
+            A checklist that follows your wedding date, from booking the hall to the
+            homecoming, so nothing is remembered too late.
+          </li>
+          <li>
+            <strong>Budget</strong>
+            Set a total in rupees, split it by category, and log every advance so the
+            balance is always the real one.
+          </li>
+          <li>
+            <strong>Guests</strong>
+            RSVPs, phone numbers, table groups and a final count you can hand to the
+            hall without rewriting it.
+          </li>
+          <li>
+            <strong>Vendors</strong>
+            Photographers, dancers, salons and decorators with their quotes and contract
+            dates beside each name.
+          </li>
+        </ul>
+
+        <p class="modal-foot-text">Creating an account is free and takes about a minute.
+          Your plan stays private to the people you invite into it.</p>
+      </div>
+
+      <div class="modal-actions">
+        <a class="btn-primary" href="register.html">Start planning now</a>
+        <button type="button" class="btn-ghost" id="modalDismiss">Maybe later</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/home.js?v=1.0"></script>
+</body>
+
+</html>
