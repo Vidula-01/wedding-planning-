@@ -1,0 +1,113 @@
+/* ==========================================================
+   WEDORA - Wedding Details page
+   Loaded after dashboard.css and profile.css, so it reuses the
+   same tokens and the same .panel / .field / .btn-save
+   primitives — only what's new for this page lives here.
+   ========================================================== */
+
+/* ===================== Mini summary banner ===================== */
+.wd-summary {
+  position: relative;
+  background: linear-gradient(120deg, var(--rose-bg) 0%, #fbdde0 100%);
+  border-radius: 22px;
+  padding: 22px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.wd-summary::after {
+  content: '💐';
+  position: absolute;
+  right: 22px;
+  bottom: -14px;
+  font-size: 70px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+.wd-summary-text .eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a2634;
+  margin-bottom: 2px;
+}
+.wd-summary-text h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--maroon-dark);
+}
+.wd-summary .date-card {
+  z-index: 1;
+}
+
+/* ===================== Form grid ===================== */
+.wd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.wd-grid .form-panel.full-span {
+  grid-column: 1 / -1;
+}
+
+/* ===================== Textarea ===================== */
+.field textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  background: #fff;
+  border: 1.4px solid var(--line);
+  border-radius: 10px;
+  resize: vertical;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.field textarea:hover { border-color: #d3b9c2; }
+.field textarea:focus {
+  outline: none;
+  border-color: var(--maroon);
+  box-shadow: 0 0 0 3px rgba(134, 41, 71, 0.12);
+}
+
+/* ===================== Section icon badges ===================== */
+.form-panel .panel-head .panel-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--rose-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.form-panel .panel-head .panel-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--maroon);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.form-panel .panel-head-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 1100px) {
+  .wd-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 620px) {
+  .wd-summary { padding: 20px; }
+}
