@@ -133,3 +133,30 @@ INSERT INTO tasks (user_id, title, category, due_date, priority, status) VALUES
 (NULL, 'Bridal Dress Fitting', 'Attire',        '2026-06-15', 'Low',    'To Do'),
 (NULL, 'Book DJ / Band',       'Entertainment', '2026-06-20', 'Low',    'To Do');
 
+
+-- ----------------------------------------------------------
+-- Budget items table – Budget page (budget.html / php/budget.php)
+-- Total Budget comes from wedding_details.total_budget;
+-- Spent / Remaining / % used are calculated from these rows.
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS budget_items (
+  id         INT UNSIGNED   NOT NULL AUTO_INCREMENT,
+  user_id    INT UNSIGNED   NOT NULL,
+  category   VARCHAR(100)   NOT NULL,
+  estimated  DECIMAL(12,2)  NOT NULL DEFAULT 0,
+  actual     DECIMAL(12,2)  NOT NULL DEFAULT 0,
+  is_paid    TINYINT(1)     NOT NULL DEFAULT 0,
+  created_at TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY fk_budget_user (user_id),
+  CONSTRAINT fk_budget_user
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Optional sample rows (replace 1 with a real users.id, then uncomment):
+-- INSERT INTO budget_items (user_id, category, estimated, actual, is_paid) VALUES
+-- (1,'Venue',400000,350000,1),(1,'Catering',300000,290000,1),
+-- (1,'Photography',150000,100000,1),(1,'Attire',200000,150000,0),
+-- (1,'Decorations',150000,100000,1);
