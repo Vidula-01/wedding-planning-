@@ -1,0 +1,79 @@
+/* WEDORA – Budget page (extends css/tasks.css) */
+
+/* Every number on this page uses Inter */
+.num, .budget-table td.n, .budget-table td.n * {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  margin-bottom: 40px;
+}
+.summary-card {
+  background: var(--bg-card);
+  border: 1px solid #f0cfd6;
+  border-radius: 14px;
+  padding: 18px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.summary-label { font-size: 16px; font-weight: 600; color: var(--wedora-maroon); }
+.summary-card strong { font-size: 30px; font-weight: 700; color: var(--wedora-maroon); letter-spacing: -0.3px; }
+.summary-card strong.over { color: var(--color-trash); }
+
+.budget-grid {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+/* Donut */
+.donut-wrap { position: relative; width: 290px; height: 290px; margin: 40px auto 0; }
+.donut-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.donut-wrap circle { fill: none; stroke-width: 40; }
+.donut-rest { stroke: #bfaab5; }
+.donut-used { stroke: #ff7570; transition: stroke-dasharray .6s ease; }
+.donut-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.donut-center::before {
+  content: ''; position: absolute; width: 56%; height: 56%; border-radius: 50%; background: #fff; z-index: -1;
+}
+.donut-pct { font-size: 40px; font-weight: 600; color: #5b1230; line-height: 1; }
+.donut-cap { font-family: var(--font-serif); font-size: 18px; color: #2a1a20; margin-top: 6px; }
+
+/* Table */
+.budget-card { min-height: 0; padding: 20px 24px 28px; }
+.budget-table thead th { font-size: 16px; padding: 4px 12px 16px 12px; border-bottom: 1px solid var(--border-card); }
+.budget-table td { padding: 18px 12px; font-size: 17px; }
+.budget-table td:first-child { font-weight: 400; }
+.budget-table th.c, .budget-table td.c { text-align: center; }
+.budget-table tbody tr { border-bottom: 1px solid #ecd3d9; }
+.budget-table tbody tr:last-child { border-bottom: none; }
+
+.paid-btn, .del-btn { background: none; border: 0; cursor: pointer; padding: 4px; border-radius: 50%; line-height: 0; }
+.paid-btn svg, .del-btn svg { width: 26px; height: 26px; }
+.del-btn svg { width: 22px; height: 22px; }
+.paid-btn:hover, .del-btn:hover { transform: scale(1.15); }
+.paid-btn:focus-visible, .del-btn:focus-visible { outline: 2px solid var(--wedora-maroon); outline-offset: 2px; }
+
+.paid-check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-medium); }
+.paid-check input { accent-color: var(--wedora-maroon); width: 16px; height: 16px; }
+
+@media (max-width: 1100px) {
+  .budget-grid { grid-template-columns: 1fr; }
+  .donut-wrap { margin-top: 0; }
+}
+@media (max-width: 700px) {
+  .summary-row { grid-template-columns: 1fr; gap: 14px; }
+  .summary-card strong { font-size: 26px; }
+  .donut-wrap { width: 230px; height: 230px; }
+  .budget-table td { font-size: 14px; padding: 14px 8px; }
+  .budget-table thead th { font-size: 13px; }
+}
