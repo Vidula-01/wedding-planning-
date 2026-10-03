@@ -1,0 +1,55 @@
+/* WEDORA - shared authenticated-page shell. Loaded after page CSS. */
+:root{
+  --maroon:#862947;
+  --maroon-dark:#6c1f39;
+  --plum:#8a3a58;
+  --rose-bg:#f9cdd0;
+  --rose-soft:#fbe3e5;
+  --card-bg:#ffffff;
+  --ink:#1c1c1e;
+  --muted:#8e8e93;
+  --line:#e2e2e7;
+  --success:#1f7a4d;
+  --font-body:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-display:'Playfair Display',Georgia,'Times New Roman',serif;
+}
+html,body{min-height:100%;}
+body{background:#fff !important;color:var(--ink);font-family:var(--font-body);}
+body, .app-container{display:flex;}
+.app-container{width:100%;min-height:100vh;}
+.sidebar{width:260px !important;min-height:100vh;flex:0 0 260px;background:var(--rose-bg) !important;border:0 !important;box-shadow:none !important;display:flex !important;flex-direction:column !important;padding:26px 20px 24px !important;position:sticky;top:0;z-index:20;}
+.sidebar-logo{padding:0 !important;border:0 !important;display:flex !important;align-items:center;justify-content:center;margin:0 0 22px !important;}
+.sidebar-logo a{display:flex;justify-content:center;width:100%;}
+.sidebar-logo img,.sidebar-brand img{width:150px !important;height:auto !important;max-height:none !important;object-fit:contain;}
+.sidebar-nav,.sidebar-menu{display:flex !important;flex-direction:column !important;gap:6px !important;flex:1;padding:0 !important;margin:0 !important;list-style:none;}
+.nav-item,.menu-item,.nav-link{display:flex !important;align-items:center;gap:12px;padding:13px 18px !important;border-radius:24px !important;font-size:15px !important;font-weight:600 !important;color:var(--maroon-dark) !important;text-decoration:none !important;transition:background .15s,color .15s,transform .1s;}
+.nav-item svg,.menu-item svg,.nav-link svg{width:19px !important;height:19px !important;flex:0 0 19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.nav-item:hover,.menu-item:hover,.nav-link:hover{background:rgba(134,41,71,.08) !important;color:var(--maroon-dark) !important;}
+.nav-item.is-active,.nav-item.active,.menu-item.is-active,.menu-item.active,.nav-link.is-active,.nav-link.active{background:var(--maroon) !important;color:#fff !important;box-shadow:0 6px 16px rgba(134,41,71,.3) !important;}
+.sidebar-footer{margin-top:18px !important;padding:0 !important;}
+.btn-logout,.logout-btn{width:100%;display:flex !important;align-items:center;justify-content:center;gap:8px;padding:12px 16px !important;border-radius:24px !important;border:1.5px solid var(--maroon) !important;background:#fff !important;color:var(--maroon) !important;font:inherit;font-weight:600 !important;font-size:14px !important;cursor:pointer;}
+.btn-logout:hover,.logout-btn:hover{background:var(--maroon) !important;color:#fff !important;border-color:var(--maroon) !important;}
+.btn-logout svg,.logout-btn svg{width:16px !important;height:16px !important;stroke:currentColor;fill:none;stroke-width:2;}
+.main,.main-wrapper,.main-content{flex:1 !important;min-width:0;min-height:100vh;background:#fff !important;overflow-y:auto;}
+.main-wrapper{padding:32px 36px !important;}
+.main-content{padding:32px 36px !important;}
+@media(max-width:900px){
+  .sidebar{width:230px !important;flex-basis:230px !important;}
+  .main-wrapper,.main-content{padding:24px !important;}
+}
+@media(max-width:720px){
+  body,.app-container{display:block;}
+  .sidebar{width:100% !important;min-height:auto;position:relative;padding:16px !important;}
+  .sidebar-nav,.sidebar-menu{display:grid !important;grid-template-columns:repeat(2,minmax(0,1fr));}
+  .sidebar-footer{margin-top:12px !important;}
+  .main,.main-wrapper,.main-content{min-height:auto;padding:20px !important;}
+}
+
+/* Dashboard palette for secondary cards/icons across app pages */
+.icon-blue{background:#fbe3e5 !important;color:var(--maroon) !important;}
+.icon-green{background:#f7e8ed !important;color:var(--maroon) !important;}
+.icon-pink{background:#fbe3e5 !important;color:var(--maroon) !important;}
+.icon-orange{background:#f9edf0 !important;color:var(--maroon) !important;}
+.page-title,.page-heading{color:var(--maroon-dark) !important;font-family:var(--font-display) !important;}
+.btn-add-task,.btn-add-guest{background:var(--maroon) !important;}
+.btn-add-task:hover,.btn-add-guest:hover{background:var(--maroon-dark) !important;}

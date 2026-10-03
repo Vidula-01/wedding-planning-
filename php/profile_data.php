@@ -1,80 +1,17 @@
 <?php
 declare(strict_types=1);
-
-/* ==========================================================
-   WEDORA - Profile data endpoint
-   Returns everything profile.html needs as JSON, pulled live
-   from the database for the logged-in user only. Mirrors the
-   same pattern as dashboard_data.php.
-   ========================================================== */
-
 require __DIR__ . '/config.php';
 require __DIR__ . '/auth.php';
-
 header('Content-Type: application/json; charset=utf-8');
-
 require_login_json();
-
-$userId = (int)$_SESSION['user_id'];
-
-function respond(int $status, array $payload): void
-{
-    http_response_code($status);
-    echo json_encode($payload, JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-try {
-    $pdo = db();
-
-    $stmt = $pdo->prepare('SELECT id, full_name, email, phone, created_at FROM users WHERE id = :id LIMIT 1');
-    $stmt->execute([':id' => $userId]);
-    $user = $stmt->fetch();
-
-    if (!$user) {
-        respond(404, ['success' => false, 'message' => 'Account not found.']);
-    }
-
-    $stmt = $pdo->prepare('SELECT * FROM wedding_details WHERE user_id = :uid LIMIT 1');
-    $stmt->execute([':uid' => $userId]);
-    $wd = $stmt->fetch();
-
-    if (!$wd) {
-        /* first visit: create the blank row, same as dashboard_data.php does */
-        $pdo->prepare(
-            'INSERT INTO wedding_details (user_id, total_budget, spent_budget, guests_confirmed, vendors_saved)
-             VALUES (:uid, 0, 0, 0, 0)'
-        )->execute([':uid' => $userId]);
-
-        $wd = [
-            'partner_name'     => null,
-            'wedding_date'     => null,
-            'total_budget'     => 0,
-            'spent_budget'     => 0,
-            'guests_confirmed' => 0,
-            'vendors_saved'    => 0,
-        ];
-    }
-
-    respond(200, [
-        'success' => true,
-        'user' => [
-            'full_name'    => $user['full_name'],
-            'email'        => $user['email'],
-            'phone'        => $user['phone'],
-            'member_since' => date('jS F Y', strtotime((string)$user['created_at'])),
-        ],
-        'wedding' => [
-            'partner_name'     => $wd['partner_name'] ?? '',
-            'wedding_date'     => $wd['wedding_date'] ?? '',
-            'total_budget'     => (float)($wd['total_budget'] ?? 0),
-            'spent_budget'     => (float)($wd['spent_budget'] ?? 0),
-            'guests_confirmed' => (int)($wd['guests_confirmed'] ?? 0),
-            'vendors_saved'    => (int)($wd['vendors_saved'] ?? 0),
-        ],
-    ]);
-
-} catch (Throwable $e) {
-    error_log('[WEDORA profile_data] ' . $e->getMessage());
-    respond(503, ['success' => false, 'message' => 'Could not load your profile right now. Please make sure the database is set up (import database/wedora.sql) and try again.']);
-}
+function respond(int $code,array $data):void{http_response_code($code);echo json_encode($data,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);exit;}
+try{
+ $pdo=db(); $uid=(int)$_SESSION['user_id'];
+ $cols=$pdo->query("SELECT COLUMN_NAME FROM information_schema.columns WHERE table_schema=DATABASE() AND table_name='users'")->fetchAll(PDO::FETCH_COLUMN);
+ if(!in_array('address',$cols,true)) $pdo->exec("ALTER TABLE users ADD COLUMN address VARCHAR(255) NULL AFTER phone");
+ if(!in_array('date_of_birth',$cols,true)) $pdo->exec("ALTER TABLE users ADD COLUMN date_of_birth DATE NULL AFTER address");
+ $s=$pdo->prepare('SELECT id,full_name,email,phone,address,date_of_birth,created_at FROM users WHERE id=:id LIMIT 1');$s->execute([':id'=>$uid]);$u=$s->fetch();
+ if(!$u)respond(404,['success'=>false,'message'=>'Account not found.']);
+ $s=$pdo->prepare('SELECT photo_path FROM wedding_details WHERE user_id=:uid LIMIT 1');$s->execute([':uid'=>$uid]);$wd=$s->fetch();
+ respond(200,['success'=>true,'user'=>['full_name'=>$u['full_name'],'email'=>$u['email'],'phone'=>$u['phone'],'address'=>$u['address']??'','date_of_birth'=>$u['date_of_birth']??'','member_since'=>date('jS F Y',strtotime((string)$u['created_at'])),'photo_path'=>$wd['photo_path']??'', 'photo_url'=>'php/profile_photo.php?view=1&v='.time()]]);
+}catch(Throwable $e){error_log('[WEDORA profile_data] '.$e->getMessage());respond(500,['success'=>false,'message'=>'Could not load your profile right now.']);}
