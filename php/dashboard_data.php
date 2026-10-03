@@ -1,150 +1,19 @@
 <?php
 declare(strict_types=1);
-
-/* ==========================================================
-   WEDORA - Dashboard data endpoint
-   Returns everything dashboard.html needs as JSON, pulled
-   live from the database for the logged-in user only.
-   ========================================================== */
-
-require __DIR__ . '/config.php';
-require __DIR__ . '/auth.php';
-
-header('Content-Type: application/json; charset=utf-8');
-
-require_login_json();
-
-$userId = (int)$_SESSION['user_id'];
-
-function respond(int $status, array $payload): void
-{
-    http_response_code($status);
-    echo json_encode($payload, JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-try {
-    $pdo = db();
-
-    /* ---------- account + wedding details (create a blank row the first time) ---------- */
-    $stmt = $pdo->prepare('SELECT full_name FROM users WHERE id = :id LIMIT 1');
-    $stmt->execute([':id' => $userId]);
-    $user = $stmt->fetch();
-    if (!$user) {
-        respond(404, ['success' => false, 'message' => 'Account not found.']);
-    }
-
-    $stmt = $pdo->prepare('SELECT * FROM wedding_details WHERE user_id = :uid LIMIT 1');
-    $stmt->execute([':uid' => $userId]);
-    $wd = $stmt->fetch();
-
-    if (!$wd) {
-        $pdo->prepare(
-            'INSERT INTO wedding_details (user_id, total_budget, spent_budget, guests_confirmed, vendors_saved)
-             VALUES (:uid, 0, 0, 0, 0)'
-        )->execute([':uid' => $userId]);
-
-        $wd = [
-            'partner_name'     => null,
-            'wedding_date'     => null,
-            'total_budget'     => 0,
-            'spent_budget'     => 0,
-            'guests_confirmed' => 0,
-            'vendors_saved'    => 0,
-        ];
-    }
-
-    /* ---------- days to go ---------- */
-    $daysToGo = null;
-    if (!empty($wd['wedding_date'])) {
-        $today   = new DateTime('today');
-        $wedding = new DateTime($wd['wedding_date']);
-        $diff    = $today->diff($wedding);
-        $daysToGo = $diff->invert ? 0 : (int)$diff->days;
-    }
-
-    /* ---------- tasks ---------- */
-    $stmt = $pdo->prepare('SELECT COUNT(*) AS total, SUM(is_done) AS done FROM tasks WHERE user_id = :uid');
-    $stmt->execute([':uid' => $userId]);
-    $taskCounts    = $stmt->fetch();
-    $tasksTotal    = (int)($taskCounts['total'] ?? 0);
-    $tasksDone     = (int)($taskCounts['done'] ?? 0);
-    $tasksProgress = $tasksTotal > 0 ? round(($tasksDone / $tasksTotal) * 100) : 0;
-
-    $stmt = $pdo->prepare(
-        'SELECT title, due_date, is_done FROM tasks
-         WHERE user_id = :uid AND is_done = 0
-         ORDER BY due_date IS NULL, due_date ASC, sort_order ASC
-         LIMIT 5'
-    );
-    $stmt->execute([':uid' => $userId]);
-    $upcomingTasks = array_map(function ($row) {
-        return [
-            'title'    => $row['title'],
-            'due_date' => $row['due_date'] ? date('d M Y', strtotime($row['due_date'])) : '',
-            'is_done'  => (bool)$row['is_done'],
-        ];
-    }, $stmt->fetchAll());
-
-    /* ---------- budget ---------- */
-    $totalBudget = (float)$wd['total_budget'];
-    $spentBudget = (float)$wd['spent_budget'];
-    $remaining   = max($totalBudget - $spentBudget, 0);
-    $spentPct    = $totalBudget > 0 ? round(($spentBudget / $totalBudget) * 100) : 0;
-
-    /* ---------- upcoming payments ---------- */
-    $stmt = $pdo->prepare(
-        "SELECT payment_name, amount, due_date FROM payments
-         WHERE user_id = :uid AND status = 'upcoming'
-         ORDER BY due_date IS NULL, due_date ASC
-         LIMIT 5"
-    );
-    $stmt->execute([':uid' => $userId]);
-    $upcomingPayments = array_map(function ($row) {
-        return [
-            'name'     => $row['payment_name'],
-            'amount'   => 'Rs. ' . number_format((float)$row['amount']),
-            'due_date' => $row['due_date'] ? date('d M Y', strtotime($row['due_date'])) : '',
-        ];
-    }, $stmt->fetchAll());
-
-    /* ---------- assemble response ---------- */
-    $coupleName = $user['full_name'];
-    if (!empty($wd['partner_name'])) {
-        $coupleName = $user['full_name'] . ' & ' . $wd['partner_name'];
-    }
-
-    respond(200, [
-        'success' => true,
-        'user' => [
-            'full_name'   => $user['full_name'],
-            'couple_name' => $coupleName,
-        ],
-        'wedding' => [
-            'date'        => !empty($wd['wedding_date']) ? date('jS F Y', strtotime($wd['wedding_date'])) : 'Not set yet',
-            'days_to_go'  => $daysToGo,
-        ],
-        'stats' => [
-            'tasks_done'       => $tasksDone,
-            'tasks_total'      => $tasksTotal,
-            'tasks_progress'   => $tasksProgress,
-            'budget_spent'     => 'Rs. ' . number_format($spentBudget),
-            'budget_total'     => number_format($totalBudget),
-            'budget_pct'       => $spentPct,
-            'guests_confirmed' => (int)$wd['guests_confirmed'],
-            'vendors_saved'    => (int)$wd['vendors_saved'],
-        ],
-        'budget_overview' => [
-            'total'     => 'Rs. ' . number_format($totalBudget),
-            'spent'     => 'Rs. ' . number_format($spentBudget),
-            'remaining' => 'Rs. ' . number_format($remaining),
-            'spent_pct' => $spentPct,
-        ],
-        'upcoming_tasks'    => $upcomingTasks,
-        'upcoming_payments' => $upcomingPayments,
-    ]);
-
-} catch (Throwable $e) {
-    error_log('[WEDORA dashboard_data] ' . $e->getMessage());
-    respond(503, ['success' => false, 'message' => 'Could not load your dashboard right now. Please make sure the database is set up (import database/wedora.sql) and try again.']);
-}
+require __DIR__.'/config.php'; require __DIR__.'/auth.php'; header('Content-Type: application/json; charset=utf-8'); require_login_json();
+function respond(int $code,array $p):void{http_response_code($code);echo json_encode($p,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);exit;}
+function tableExists(PDO $pdo,string $table):bool{$s=$pdo->prepare("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=DATABASE() AND table_name=:t");$s->execute([':t'=>$table]);return (int)$s->fetchColumn()>0;}
+function moneyText(float $n):string{return 'Rs. '.number_format($n);}
+try{$pdo=db();$uid=(int)$_SESSION['user_id'];
+$s=$pdo->prepare('SELECT full_name FROM users WHERE id=:id LIMIT 1');$s->execute([':id'=>$uid]);$u=$s->fetch();if(!$u)respond(404,['success'=>false,'message'=>'Account not found.']);
+$s=$pdo->prepare('SELECT * FROM wedding_details WHERE user_id=:uid LIMIT 1');$s->execute([':uid'=>$uid]);$wd=$s->fetch();if(!$wd){$pdo->prepare('INSERT INTO wedding_details(user_id) VALUES(:uid)')->execute([':uid'=>$uid]);$wd=['bride_name'=>'','groom_name'=>'','partner_name'=>'','wedding_date'=>null,'total_budget'=>0,'spent_budget'=>0];}
+$bride=trim((string)($wd['bride_name']??''));$groom=trim((string)($wd['groom_name']??''));$partner=trim((string)($wd['partner_name']??''));$full=trim((string)$u['full_name']);$couple=$bride&&$groom?"$bride & $groom":($bride?:($groom?:($partner?"$full & $partner":$full)));
+$days=null;$dateText='Not set yet';if(!empty($wd['wedding_date'])){try{$d=new DateTime((string)$wd['wedding_date']);$today=new DateTime('today');$diff=$today->diff($d);$days=$diff->invert?0:(int)$diff->days;$dateText=$d->format('jS F Y');}catch(Throwable $e){}}
+$tasksTotal=$tasksDone=0;$upcoming=[];if(tableExists($pdo,'tasks')){$s=$pdo->prepare("SELECT COUNT(*) total, COALESCE(SUM(status='Completed'),0) done FROM tasks WHERE user_id=:uid");$s->execute([':uid'=>$uid]);$r=$s->fetch();$tasksTotal=(int)$r['total'];$tasksDone=(int)$r['done'];$s=$pdo->prepare("SELECT title,due_date,status FROM tasks WHERE user_id=:uid AND status<>'Completed' ORDER BY due_date IS NULL ASC,due_date ASC,id ASC LIMIT 5");$s->execute([':uid'=>$uid]);foreach($s->fetchAll() as $r)$upcoming[]=['title'=>(string)$r['title'],'due_date'=>!empty($r['due_date'])?date('d M Y',strtotime($r['due_date'])):'','status'=>(string)$r['status']];}
+$total=(float)($wd['total_budget']??0);$spent=(float)($wd['spent_budget']??0);if(tableExists($pdo,'budget_items')){$s=$pdo->prepare('SELECT COALESCE(SUM(estimated),0) est, COALESCE(SUM(actual),0) act FROM budget_items WHERE user_id=:uid');$s->execute([':uid'=>$uid]);$br=$s->fetch();$budgetEst=(float)$br['est'];$budgetActual=(float)$br['act'];if($total<=0)$total=$budgetEst;if($budgetActual>0||$total>0)$spent=$budgetActual;}
+$remaining=max($total-$spent,0);$pct=$total>0?(int)round($spent/$total*100):0;$pct=max(0,min(100,$pct));
+$guestsConfirmed=0;if(tableExists($pdo,'guests')){$s=$pdo->prepare("SELECT COUNT(*) FROM guests WHERE user_id=:uid AND rsvp='Confirmed'");$s->execute([':uid'=>$uid]);$guestsConfirmed=(int)$s->fetchColumn();}else{$guestsConfirmed=(int)($wd['guests_confirmed']??0);}
+$vendorsSaved=0;if(tableExists($pdo,'vendors')){$s=$pdo->prepare('SELECT COUNT(*) FROM vendors WHERE user_id=:uid');$s->execute([':uid'=>$uid]);$vendorsSaved=(int)$s->fetchColumn();}else{$vendorsSaved=(int)($wd['vendors_saved']??0);}
+$payments=[];if(tableExists($pdo,'payments')){$pdo->prepare("UPDATE payments SET status='overdue' WHERE user_id=:uid AND status='upcoming' AND due_date IS NOT NULL AND due_date < CURDATE()")->execute([':uid'=>$uid]);$s=$pdo->prepare("SELECT payment_name,amount,due_date FROM payments WHERE user_id=:uid AND status='upcoming' ORDER BY due_date IS NULL ASC,due_date ASC LIMIT 5");$s->execute([':uid'=>$uid]);foreach($s->fetchAll() as $r)$payments[]=['name'=>$r['payment_name'],'amount'=>moneyText((float)$r['amount']),'due_date'=>!empty($r['due_date'])?date('d M Y',strtotime($r['due_date'])):''];}
+respond(200,['success'=>true,'user'=>['full_name'=>$full,'couple_name'=>$couple],'wedding'=>['date'=>$dateText,'days_to_go'=>$days],'stats'=>['tasks_done'=>$tasksDone,'tasks_total'=>$tasksTotal,'tasks_progress'=>$tasksTotal?(int)round($tasksDone/$tasksTotal*100):0,'budget_spent'=>moneyText($spent),'budget_total'=>number_format($total),'budget_pct'=>$pct,'guests_confirmed'=>$guestsConfirmed,'vendors_saved'=>$vendorsSaved],'budget_overview'=>['total'=>moneyText($total),'spent'=>moneyText($spent),'remaining'=>moneyText($remaining),'spent_pct'=>$pct],'upcoming_tasks'=>$upcoming,'upcoming_payments'=>$payments]);
+}catch(Throwable $e){error_log('[WEDORA dashboard_data] '.$e->getMessage());respond(500,['success'=>false,'message'=>'Could not load your dashboard right now. Please check the database and try again.']);}

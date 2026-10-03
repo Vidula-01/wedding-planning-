@@ -2,95 +2,470 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Wedding Details | WEDORA</title>
-  <meta name="description" content="WEDORA Wedding Details page.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/dashboard.css">
-  <link rel="stylesheet" href="css/shell.css">
+    <title>Wedding Details | WEDORA</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Main styles -->
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/wedding-details.css">
+  <link rel="stylesheet" href="css/app-shell.css">
 </head>
 
 <body>
 
-  <!-- ===== Sidebar ===== -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <a href="dashboard.html" aria-label="WEDORA home">
       <img src="images/logo.png" alt="WEDORA - Plan Your Perfect Beginning">
-    </div>
-
-    <nav class="sidebar-nav" aria-label="Dashboard navigation">
-      <a href="dashboard.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
-        Dashboard
-      </a>
-      <a href="wedding-details.html" class="nav-item is-active">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg>
-        Wedding Details
-      </a>
-      <a href="tasks.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1z"/><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 12h6M9 16h6"/></svg>
-        Tasks
-      </a>
-      <a href="budget.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        Budget
-      </a>
-      <a href="vendors.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9"/><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 20v-5h6v5"/></svg>
-        Vendors
-      </a>
-      <a href="guests.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="18" cy="9" r="2.5"/><path d="M15.5 20c.3-2.5 2-4.5 4.5-4.9"/></svg>
-        Guests
-      </a>
-      <a href="profile.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-        Profile
-      </a>
-      <a href="faq.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.1-1.7 2.5"/><path d="M12 17h.01"/></svg>
-        FQA
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <button type="button" class="btn-logout" id="logoutBtn">
-        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-        Log out
-      </button>
-    </div>
-  </aside>
-
-  <!-- ===== Main content ===== -->
-  <div class="main">
-    <div class="topbar">
-      <button type="button" class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
-        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
-    </div>
-
-    <div class="content">
-      <div class="empty-state">
-        <div class="empty-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg>
-        </div>
-        <h1>Wedding Details</h1>
-        <p>This is where you'll set your ceremony & reception venues, timings and other big-day details. This module is coming soon — for now, your wedding date, partner's name and budget can be edited from your Profile page.</p>
-        <a href="dashboard.html" class="btn-back">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Back to Dashboard
-        </a>
-      </div>
-    </div>
+    </a>
   </div>
 
-  <script src="js/shell.js"></script>
+  <nav class="sidebar-nav" aria-label="Dashboard navigation">
+      <a href="dashboard.html" class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="wedding-details.html" class="nav-item is-active" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg>
+        <span>Wedding Details</span>
+      </a>
+      <a href="tasks.html" class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1z"/><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 12h6M9 16h6"/></svg>
+        <span>Tasks</span>
+      </a>
+      <a href="budget.html" class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span>Budget</span>
+      </a>
+      <a href="vendors.html" class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 20v-5h6v5"/></svg>
+        <span>Vendors</span>
+      </a>
+      <a href="guests.html" class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="18" cy="9" r="2.5"/><path d="M15.5 20c.3-2.5 2-4.5 4.5-4.9"/></svg>
+        <span>Guests</span>
+      </a>
+      <a href="profile.html" class="nav-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        <span>Profile</span>
+      </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button type="button" class="btn-logout" id="logoutBtn" title="Log out">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      <span>Log out</span>
+    </button>
+  </div>
+</aside>
+
+
+
+    <!-- =====================================================
+         MAIN AREA
+         ===================================================== -->
+
+    <main class="main">
+
+
+
+
+
+        <!-- =================================================
+             CONTENT
+             ================================================= -->
+
+        <div class="content wedding-details-page">
+
+
+            <!-- Page title -->
+            <h1>
+                Wedding Details
+            </h1>
+
+
+
+            <!-- =================================================
+                 LOADING MESSAGE
+                 ================================================= -->
+
+            <div
+                id="dashStatus"
+                class="dash-status">
+
+                Loading your wedding details...
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MAIN WEDDING CARD
+                 ================================================= -->
+
+            <div
+                id="dashBody"
+                class="wedding-details-card"
+                style="display: none;">
+
+
+
+                <!-- =============================================
+                     LEFT SIDE - PHOTO
+                     ============================================= -->
+
+                <div class="wedding-photo-section">
+
+
+                    <!-- Wedding image -->
+
+                    <img
+                        id="weddingPhoto"
+                        class="wedding-photo"
+                        src="images/wedding-default.jpg"
+                        alt="Wedding decoration">
+
+
+                    <!-- Change photo button -->
+
+                    <button
+                        type="button"
+                        class="change-photo-btn"
+                        id="changePhotoBtn">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+
+                            <circle
+                                cx="12"
+                                cy="13"
+                                r="4"/>
+
+                        </svg>
+
+                        Change Photo
+
+                    </button>
+
+
+                    <!-- Hidden file input -->
+
+                    <input
+                        type="file"
+                        id="photoInput"
+                        accept="image/*"
+                        hidden>
+
+                </div>
+
+
+
+                <!-- =============================================
+                     RIGHT SIDE - FORM
+                     ============================================= -->
+
+                <div class="wedding-form-section">
+
+                    <form
+                        id="weddingDetailsForm"
+                        class="wedding-form">
+
+
+
+                        <!-- =====================================
+                             BRIDE NAME
+                             ===================================== -->
+
+                        <div class="wedding-field">
+
+                            <label for="brideName">
+                                Bride Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="brideName"
+                                name="bride_name"
+                                placeholder="Enter bride name">
+
+                            <small
+                                class="field-error"
+                                id="err_bride_name">
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             GROOM NAME
+                             ===================================== -->
+
+                        <div class="wedding-field">
+
+                            <label for="partnerName">
+                                Groom Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="partnerName"
+                                name="partner_name"
+                                placeholder="Enter groom name">
+
+                            <small
+                                class="field-error"
+                                id="err_partner_name">
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             WEDDING DATE
+                             ===================================== -->
+
+                        <div class="wedding-field">
+
+                            <label for="weddingDate">
+                                Wedding Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="weddingDate"
+                                name="wedding_date">
+
+                            <small
+                                class="field-error"
+                                id="err_wedding_date">
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             WEDDING VENUE
+                             ===================================== -->
+
+                        <div class="wedding-field">
+
+                            <label for="ceremonyVenue">
+                                Wedding Venue
+                            </label>
+
+                            <input
+                                type="text"
+                                id="ceremonyVenue"
+                                name="ceremony_venue"
+                                placeholder="Enter wedding venue">
+
+                            <small
+                                class="field-error"
+                                id="err_ceremony_venue">
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             WEDDING TYPE + EXPECTED GUESTS
+                             ===================================== -->
+
+                        <div class="wedding-two-fields">
+
+
+                            <!-- Wedding Type -->
+
+                            <div class="wedding-field">
+
+                                <label for="theme">
+                                    Wedding Type
+                                </label>
+
+                                <select
+                                    id="theme"
+                                    name="theme">
+
+                                    <option value="">
+                                        Select type
+                                    </option>
+
+                                    <option value="Traditional">
+                                        Traditional
+                                    </option>
+
+                                    <option value="Modern">
+                                        Modern
+                                    </option>
+
+                                    <option value="Garden">
+                                        Garden
+                                    </option>
+
+                                    <option value="Beach">
+                                        Beach
+                                    </option>
+
+                                    <option value="Destination">
+                                        Destination
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- Expected Guests -->
+
+                            <div class="wedding-field">
+
+                                <label for="expectedGuests">
+                                    Expected Guests
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="expectedGuests"
+                                    name="expected_guests"
+                                    min="0"
+                                    placeholder="200">
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             ESTIMATED BUDGET
+                             ===================================== -->
+
+                        <div class="wedding-field">
+
+                            <label for="estimatedBudget">
+                                Estimated Budget (Rs.)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="estimatedBudget"
+                                name="estimated_budget"
+                                min="0"
+                                placeholder="1500000">
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             WEDDING THEME / NOTES
+                             ===================================== -->
+
+                        <div class="wedding-field">
+
+                            <label for="notes">
+                                Wedding Theme / Notes
+                            </label>
+
+                            <textarea
+                                id="notes"
+                                name="notes"
+                                placeholder="Enter wedding theme or notes"></textarea>
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             STATUS + SAVE
+                             ===================================== -->
+
+                        <div class="wedding-form-bottom">
+
+                            <div
+                                id="weddingDetailsStatus"
+                                class="form-status">
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                id="saveWeddingDetailsBtn"
+                                class="save-wedding-btn">
+
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round">
+
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+
+                                    <polyline points="17 21 17 13 7 13 7 21"/>
+
+                                    <polyline points="7 3 7 8 15 8"/>
+
+                                </svg>
+
+                                Save Changes
+
+                            </button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="js/shell.js"></script>
+
+    <script src="js/wedding-details.js"></script>
+
+
 </body>
 
 </html>

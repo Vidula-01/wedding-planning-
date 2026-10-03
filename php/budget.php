@@ -34,6 +34,20 @@ function money($v): float
     return max(0.0, round((float)$v, 2));
 }
 
+function syncSpentBudget(PDO $pdo, int $uid): void
+{
+    $s = $pdo->prepare('SELECT COALESCE(SUM(actual),0) FROM budget_items WHERE user_id = ?');
+    $s->execute([$uid]);
+    $spent = (float)$s->fetchColumn();
+    $w = $pdo->prepare('SELECT id FROM wedding_details WHERE user_id = ? LIMIT 1');
+    $w->execute([$uid]);
+    if ($w->fetch()) {
+        $pdo->prepare('UPDATE wedding_details SET spent_budget = ? WHERE user_id = ?')->execute([$spent, $uid]);
+    } else {
+        $pdo->prepare('INSERT INTO wedding_details (user_id, spent_budget) VALUES (?, ?)')->execute([$uid, $spent]);
+    }
+}
+
 /* Total budget = wedding_details.total_budget (set on Wedding Details page).
    If it is not set yet, fall back to the sum of the estimates. */
 function summary(PDO $pdo, int $uid): array
@@ -107,6 +121,7 @@ try {
                            VALUES (?, ?, ?, ?, ?)')
                 ->execute([$uid, mb_substr($category, 0, 100), money($b['estimated'] ?? 0),
                            money($b['actual'] ?? 0), empty($b['is_paid']) ? 0 : 1]);
+            syncSpentBudget($pdo, $uid);
             respond(201, ['success' => true, 'message' => 'Expense added.']);
 
         case 'PUT':
@@ -123,6 +138,7 @@ try {
             $params[] = $id; $params[] = $uid;
             $pdo->prepare('UPDATE budget_items SET ' . implode(', ', $set) . ' WHERE id = ? AND user_id = ?')
                 ->execute($params);
+            syncSpentBudget($pdo, $uid);
             respond(200, ['success' => true, 'message' => 'Expense updated.']);
 
         case 'DELETE':
@@ -132,6 +148,7 @@ try {
             if ($st->rowCount() === 0) {
                 respond(404, ['success' => false, 'message' => 'Expense not found.']);
             }
+            syncSpentBudget($pdo, $uid);
             respond(200, ['success' => true, 'message' => 'Expense deleted.']);
 
         default:

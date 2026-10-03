@@ -147,22 +147,39 @@ try {
     $storedHash  = '';
 
     while (($row = fgetcsv($handle)) !== false) {
-        // CSV columns: full_name, email, phone, password_hash, created_at
-        if (isset($row[1]) && strtolower(trim($row[1])) === $email) {
-            $found      = true;
-            $name       = $row[0] ?? '';
-            $storedHash = $row[3] ?? '';
-            break;
-        }
+
+    // CSV columns:
+    // 0 = registered_at
+    // 1 = full_name
+    // 2 = email
+    // 3 = phone
+    // 4 = password_hash
+
+    if (isset($row[2]) && strtolower(trim($row[2])) === $email) {
+        $found      = true;
+        $name       = $row[1] ?? '';
+        $storedHash = $row[4] ?? '';
+        break;
     }
+}
     fclose($handle);
 
     if (!$found || !password_verify($password, $storedHash)) {
-        respond(401, ['success' => false, 'message' => 'Invalid email or password. Please try again.']);
-    }
-
-    respond(200, [
-        'success' => true,
-        'message' => 'Welcome back, ' . htmlspecialchars($name) . '! Redirecting…'
+    respond(401, [
+        'success' => false,
+        'message' => 'Invalid email or password. Please try again.'
     ]);
+}
+
+/* CSV credentials OK - create session */
+session_start();
+
+$_SESSION['user_id'] = md5($email);
+$_SESSION['user_name'] = $name;
+$_SESSION['user_email'] = $email;
+
+respond(200, [
+    'success' => true,
+    'message' => 'Welcome back, ' . htmlspecialchars($name) . '! Redirecting…'
+]);
 }

@@ -1,211 +1,83 @@
-/* ==========================================================
-   WEDORA - Profile page logic
-   Loads the logged-in user's account + wedding details from
-   php/profile_data.php, lets them edit every field, and saves
-   changes back to MySQL via php/profile_update.php (and
-   php/change_password.php for the password section).
-   ========================================================== */
 (() => {
   'use strict';
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $('dashStatus'), bodyEl = $('dashBody');
 
-  const statusEl = document.getElementById('dashStatus');
-  const bodyEl   = document.getElementById('dashBody');
+  function setStatus(el,msg,error=false){ if(!el)return; el.textContent=msg||''; el.classList.toggle('is-error',!!(msg&&error)); el.classList.toggle('is-success',!!(msg&&!error)); }
+  function clearErrors(form){ if(!form)return; form.querySelectorAll('.field-error').forEach(e=>e.textContent=''); form.querySelectorAll('[aria-invalid="true"]').forEach(e=>e.removeAttribute('aria-invalid')); }
+  function applyErrors(form, errors){ Object.entries(errors||{}).forEach(([k,msg])=>{ const input=form.querySelector(`[name="${CSS.escape(k)}"]`); const el=$('err_'+k); if(input)input.setAttribute('aria-invalid','true'); if(el)el.textContent=msg; }); }
+  async function jsonFetch(url, options={}){
+    const res=await fetch(url,{credentials:'same-origin',headers:{Accept:'application/json',...(options.headers||{})},...options});
+    if(res.status===401){window.location.href='login.html';throw new Error('auth');}
+    const text=await res.text(); let data; try{data=JSON.parse(text);}catch{throw new Error('Server returned an invalid response. Check the PHP file.');}
+    return {res,data};
+  }
+  function initials(name){return (name||'').trim().split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'W';}
 
-  function show(el) { el.style.display = ''; }
-  function hide(el) { el.style.display = 'none'; }
-
-  function initials(fullName, partnerName) {
-    const a = (fullName || '').trim().charAt(0);
-    const b = (partnerName || '').trim().charAt(0);
-    const combined = (a + b).toUpperCase();
-    return combined || '—';
+  async function loadProfile(){
+    try{
+      const {data}=await jsonFetch('php/profile_data.php');
+      if(!data.success) throw new Error(data.message||'Could not load your profile.');
+      $('fullName').value=data.user.full_name||'';
+      $('email').value=data.user.email||'';
+      $('phone').value=data.user.phone||'';
+      $('address').value=data.user.address||'';
+      $('dateOfBirth').value=data.user.date_of_birth||'';
+      const photoUrl=data.user.photo_url || 'images/profile-default.png';
+      $('profilePhoto').src=photoUrl;
+      $('profilePhoto').onerror=()=>{ $('profilePhoto').src='images/profile-default.png'; };
+      statusEl.style.display='none'; bodyEl.style.display='';
+    }catch(e){ if(e.message!=='auth') statusEl.textContent=e.message||'Could not load your profile.'; }
   }
 
-  /* ---------- load current profile ---------- */
-  async function loadProfile() {
-    try {
-      const res = await fetch('php/profile_data.php', {
-        headers: { Accept: 'application/json' },
-        credentials: 'same-origin'
-      });
-
-      if (res.status === 401) {
-        window.location.href = 'login.html';
-        return;
-      }
-
-      const data = await res.json();
-
-      if (!data.success) {
-        statusEl.textContent = data.message || 'Could not load your profile.';
-        return;
-      }
-
-      fillForm(data);
-      hide(statusEl);
-      show(bodyEl);
-    } catch (err) {
-      statusEl.textContent = 'Could not reach the server. Make sure Apache and MySQL are running, then refresh the page.';
-    }
-  }
-
-  function fillForm(data) {
-    const u = data.user;
-    const w = data.wedding;
-
-    document.getElementById('fullName').value = u.full_name || '';
-    document.getElementById('email').value = u.email || '';
-    document.getElementById('phone').value = u.phone || '';
-
-    document.getElementById('partnerName').value = w.partner_name || '';
-    document.getElementById('weddingDate').value = w.wedding_date || '';
-    document.getElementById('totalBudget').value = w.total_budget || 0;
-    document.getElementById('spentBudget').value = w.spent_budget || 0;
-    document.getElementById('guestsConfirmed').value = w.guests_confirmed || 0;
-    document.getElementById('vendorsSaved').value = w.vendors_saved || 0;
-
-    document.getElementById('avatarInitials').textContent = initials(u.full_name, w.partner_name);
-    document.getElementById('summaryName').textContent =
-      w.partner_name ? `${u.full_name} & ${w.partner_name}` : u.full_name;
-    document.getElementById('summaryEmail').textContent = u.email;
-    document.getElementById('summaryMeta').textContent = `Member since ${u.member_since}`;
-  }
-
-  function clearErrors(form) {
-    form.querySelectorAll('.field-error').forEach((el) => { el.textContent = ''; });
-    form.querySelectorAll('[aria-invalid="true"]').forEach((el) => el.removeAttribute('aria-invalid'));
-  }
-
-  function applyErrors(form, errors) {
-    Object.keys(errors || {}).forEach((key) => {
-      const input = form.querySelector(`[name="${key}"]`);
-      const errEl = document.getElementById('err_' + key);
-      if (input) input.setAttribute('aria-invalid', 'true');
-      if (errEl) errEl.textContent = errors[key];
-    });
-  }
-
-  function setStatus(el, message, isError) {
-    el.textContent = message;
-    el.classList.remove('is-success', 'is-error');
-    if (message) el.classList.add(isError ? 'is-error' : 'is-success');
-  }
-
-  /* ---------- save profile (account + wedding details) ---------- */
-  const profileForm  = document.getElementById('profileForm');
-  const saveBtn       = document.getElementById('saveProfileBtn');
-  const profileStatus = document.getElementById('profileStatus');
-
-  profileForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearErrors(profileForm);
-    setStatus(profileStatus, '', false);
-    saveBtn.disabled = true;
-
-    const payload = {
-      full_name:         document.getElementById('fullName').value.trim(),
-      email:             document.getElementById('email').value.trim(),
-      phone:             document.getElementById('phone').value.trim(),
-      partner_name:      document.getElementById('partnerName').value.trim(),
-      wedding_date:      document.getElementById('weddingDate').value,
-      total_budget:      document.getElementById('totalBudget').value,
-      spent_budget:      document.getElementById('spentBudget').value,
-      guests_confirmed:  document.getElementById('guestsConfirmed').value,
-      vendors_saved:     document.getElementById('vendorsSaved').value,
-    };
-
-    try {
-      const res = await fetch('php/profile_update.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        credentials: 'same-origin',
-        body: JSON.stringify(payload)
-      });
-
-      if (res.status === 401) {
-        window.location.href = 'login.html';
-        return;
-      }
-
-      const data = await res.json();
-
-      if (!data.success) {
-        applyErrors(profileForm, data.errors);
-        setStatus(profileStatus, data.message || 'Please fix the errors below.', true);
-        return;
-      }
-
-      setStatus(profileStatus, data.message || 'Saved!', false);
-      document.getElementById('avatarInitials').textContent =
-        initials(payload.full_name, payload.partner_name);
-      document.getElementById('summaryName').textContent =
-        payload.partner_name ? `${payload.full_name} & ${payload.partner_name}` : payload.full_name;
-      document.getElementById('summaryEmail').textContent = payload.email;
-    } catch (err) {
-      setStatus(profileStatus, 'Could not reach the server. Please try again.', true);
-    } finally {
-      saveBtn.disabled = false;
-    }
+  $('profileForm').addEventListener('submit',async(e)=>{
+    e.preventDefault(); clearErrors($('profileForm')); setStatus($('profileStatus'),''); $('saveProfileBtn').disabled=true;
+    const payload={full_name:$('fullName').value.trim(),email:$('email').value.trim(),phone:$('phone').value.trim(),address:$('address').value.trim(),date_of_birth:$('dateOfBirth').value};
+    try{
+      const {data}=await jsonFetch('php/profile_update.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      if(!data.success){applyErrors($('profileForm'),data.errors);setStatus($('profileStatus'),data.message||'Please fix the errors below.',true);return;}
+      setStatus($('profileStatus'),data.message||'Profile saved.');
+    }catch(e){if(e.message!=='auth')setStatus($('profileStatus'),e.message||'Could not save your profile.',true);}finally{$('saveProfileBtn').disabled=false;}
   });
 
-  /* ---------- change password ---------- */
-  const passwordForm   = document.getElementById('passwordForm');
-  const savePwBtn       = document.getElementById('savePasswordBtn');
-  const passwordStatus  = document.getElementById('passwordStatus');
+  $('changePasswordBtn').addEventListener('click',()=>{$('passwordForm').hidden=false;$('changePasswordBtn').style.display='none';$('currentPassword').focus();});
+  $('cancelPasswordBtn').addEventListener('click',()=>{$('passwordForm').reset();clearErrors($('passwordForm'));setStatus($('passwordStatus'),'');$('passwordForm').hidden=true;$('changePasswordBtn').style.display='flex';});
+  $('passwordForm').addEventListener('submit',async(e)=>{
+    e.preventDefault();clearErrors($('passwordForm'));setStatus($('passwordStatus'),'');$('savePasswordBtn').disabled=true;
+    const payload={current_password:$('currentPassword').value,new_password:$('newPassword').value,confirm_password:$('confirmPassword').value};
+    try{
+      const {data}=await jsonFetch('php/change_password.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      if(!data.success){applyErrors($('passwordForm'),data.errors);setStatus($('passwordStatus'),data.message||'Please fix the errors below.',true);return;}
+      setStatus($('passwordStatus'),data.message||'Password updated.');$('passwordForm').reset();
+    }catch(e){if(e.message!=='auth')setStatus($('passwordStatus'),e.message||'Could not update password.',true);}finally{$('savePasswordBtn').disabled=false;}
+  });
 
-  passwordForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearErrors(passwordForm);
-    setStatus(passwordStatus, '', false);
-    savePwBtn.disabled = true;
-
-    const payload = {
-      current_password: document.getElementById('currentPassword').value,
-      new_password:      document.getElementById('newPassword').value,
-      confirm_password:  document.getElementById('confirmPassword').value,
-    };
-
-    try {
-      const res = await fetch('php/change_password.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        credentials: 'same-origin',
-        body: JSON.stringify(payload)
-      });
-
-      if (res.status === 401) {
-        window.location.href = 'login.html';
-        return;
+  $('changePhotoBtn').addEventListener('click',()=>$('photoInput').click());
+  $('photoInput').addEventListener('change',async()=>{
+    const file=$('photoInput').files[0]; if(!file)return;
+    if(!/^image\/(jpeg|png|webp)$/.test(file.type)){setStatus($('photoStatus'),'Please choose a JPG, PNG, or WebP image.',true);return;}
+    if(file.size>5*1024*1024){setStatus($('photoStatus'),'Photo must be smaller than 5 MB.',true);return;}
+    const reader=new FileReader(); reader.onload=e=>$('profilePhoto').src=e.target.result; reader.readAsDataURL(file);
+    const fd=new FormData(); fd.append('photo',file);
+    setStatus($('photoStatus'),'Uploading…');
+    try{
+      const res=await fetch('php/profile_photo.php',{method:'POST',credentials:'same-origin',body:fd});
+      if(res.status===401){window.location.href='login.html';return;}
+      const responseText=await res.text();
+      let data;
+      try{
+        data=JSON.parse(responseText);
+      }catch(parseError){
+        console.error('Profile photo server response:', responseText);
+        throw new Error('Photo upload failed. Please check the PHP upload folder and server error.');
       }
-
-      const data = await res.json();
-
-      if (!data.success) {
-        applyErrors(passwordForm, data.errors);
-        setStatus(passwordStatus, data.message || 'Please fix the errors below.', true);
-        return;
-      }
-
-      setStatus(passwordStatus, data.message || 'Password updated.', false);
-      passwordForm.reset();
-    } catch (err) {
-      setStatus(passwordStatus, 'Could not reach the server. Please try again.', true);
-    } finally {
-      savePwBtn.disabled = false;
-    }
+      if(!res.ok || !data.success) throw new Error(data.message||'Could not upload photo.');
+      $('profilePhoto').src=(data.photo_url || ('php/profile_photo.php?view=1&v='+Date.now()));
+      setStatus($('photoStatus'),'Photo updated.');
+    }catch(e){setStatus($('photoStatus'),e.message||'Could not upload photo.',true);}
   });
 
-  /* ---------- sidebar toggle (mobile) ---------- */
-  const sidebar      = document.getElementById('sidebar');
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  hamburgerBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('is-open');
-  });
-
-  /* ---------- logout ---------- */
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    window.location.href = 'php/logout.php';
-  });
-
+  const sidebar=$('sidebar'); const hamburger=$('hamburgerBtn'); if(sidebar&&hamburger)hamburger.addEventListener('click',()=>sidebar.classList.toggle('is-open'));
+  $('logoutBtn').addEventListener('click',()=>{window.location.href='php/logout.php';});
   loadProfile();
 })();

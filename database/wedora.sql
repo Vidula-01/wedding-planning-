@@ -1,7 +1,28 @@
 -- ==========================================================
--- WEDORA database
--- Import this file in phpMyAdmin (Import tab) or run:
+-- WEDORA - COMPLETE DATABASE
+-- ==========================================================
+-- Import this ONE file in phpMyAdmin, or run:
 --   mysql -u root -p < wedora.sql
+--
+-- This file contains the tables used by the current Wedora
+-- project, including:
+--   users
+--   guests
+--   user_sessions
+--   newsletter_subscribers
+--   password_reset_tokens
+--   tasks
+--   wedding_details
+--   budget_items
+--   payments
+--   vendors
+--
+-- Profile photos are stored as files under uploads/profile; the path is stored in wedding_details.photo_path.
+-- IMPORTANT:
+-- This file creates the database structure only.
+-- It does NOT insert demo tasks/vendors/payments, because
+-- demo rows with NULL or guessed user IDs can cause those
+-- records not to appear for the logged-in user.
 -- ==========================================================
 
 CREATE DATABASE IF NOT EXISTS wedora_db
@@ -10,153 +31,336 @@ CREATE DATABASE IF NOT EXISTS wedora_db
 
 USE wedora_db;
 
+SET FOREIGN_KEY_CHECKS = 0;
+
 -- ----------------------------------------------------------
--- Users table – stores registered members
+-- USERS
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS users (
-  id            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
-  full_name     VARCHAR(100)  NOT NULL,
-  email         VARCHAR(150)  NOT NULL,
-  phone         VARCHAR(20)   NOT NULL,
-  password_hash VARCHAR(255)  NOT NULL,   -- never store the plain password
-  created_at    TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  full_name     VARCHAR(100) NOT NULL,
+  email         VARCHAR(150) NOT NULL,
+  phone         VARCHAR(20) NOT NULL,
+  address       VARCHAR(255) NULL,
+  date_of_birth DATE NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
   PRIMARY KEY (id),
   UNIQUE KEY uq_users_email (email)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
 
 -- ----------------------------------------------------------
--- Guests table – stores wedding guest information
--- (previously in a separate guests_table.sql; now merged in
--- here so everything lives in wedora.sql / wedora_db)
+-- GUESTS
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS guests (
-  id              INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  user_id         INT UNSIGNED   NOT NULL,
-  name            VARCHAR(150)   NOT NULL,
-  side            ENUM('Bride Side','Groom Side','Both')    NOT NULL DEFAULT 'Bride Side',
-  category        ENUM('Family','Friend','Colleague','Other') NOT NULL DEFAULT 'Family',
-  invitation      ENUM('Sent','Not Sent')                   NOT NULL DEFAULT 'Not Sent',
-  rsvp            ENUM('Confirmed','Pending','Not Attending') NOT NULL DEFAULT 'Pending',
-  phone           VARCHAR(20)    NULL,
-  email           VARCHAR(150)   NULL,
-  notes           TEXT           NULL,
-  created_at      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at      TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id     INT UNSIGNED NOT NULL,
+  name        VARCHAR(150) NOT NULL,
+  side        ENUM('Bride Side','Groom Side','Both')
+              NOT NULL DEFAULT 'Bride Side',
+  category    ENUM('Family','Friend','Colleague','Other')
+              NOT NULL DEFAULT 'Family',
+  invitation  ENUM('Sent','Not Sent')
+              NOT NULL DEFAULT 'Not Sent',
+  rsvp        ENUM('Confirmed','Pending','Not Attending')
+              NOT NULL DEFAULT 'Pending',
+  phone       VARCHAR(20) NULL,
+  email       VARCHAR(150) NULL,
+  notes       TEXT NULL,
+  created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+              ON UPDATE CURRENT_TIMESTAMP,
+
   PRIMARY KEY (id),
-  KEY fk_guests_user (user_id),
+  KEY idx_guests_user (user_id),
+
   CONSTRAINT fk_guests_user
-    FOREIGN KEY (user_id) REFERENCES users (id)
-    ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    FOREIGN KEY (user_id)
+    REFERENCES users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
 
 -- ----------------------------------------------------------
--- User sessions table – optional, tracks active logins
+-- USER SESSIONS
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS user_sessions (
-  id         INT UNSIGNED  NOT NULL AUTO_INCREMENT,
-  user_id    INT UNSIGNED  NOT NULL,
-  session_id VARCHAR(128)  NOT NULL,
-  ip_address VARCHAR(45)   NULL,
-  user_agent TEXT          NULL,
-  created_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  expires_at DATETIME      NOT NULL,
+  id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id    INT UNSIGNED NOT NULL,
+  session_id VARCHAR(128) NOT NULL,
+  ip_address VARCHAR(45) NULL,
+  user_agent TEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at DATETIME NOT NULL,
+
   PRIMARY KEY (id),
   UNIQUE KEY uq_session_id (session_id),
-  KEY fk_sessions_user (user_id),
-  CONSTRAINT fk_sessions_user
-    FOREIGN KEY (user_id) REFERENCES users (id)
-    ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY idx_sessions_user (user_id),
 
+  CONSTRAINT fk_sessions_user
+    FOREIGN KEY (user_id)
+    REFERENCES users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
 
 -- ----------------------------------------------------------
--- Newsletter subscribers – emails captured on the home page
+-- NEWSLETTER SUBSCRIBERS
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS newsletter_subscribers (
-  id            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
-  email         VARCHAR(150)  NOT NULL,
-  ip_address    VARCHAR(45)   NULL,
-  subscribed_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  email         VARCHAR(150) NOT NULL,
+  ip_address    VARCHAR(45) NULL,
+  subscribed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
   PRIMARY KEY (id),
   UNIQUE KEY uq_subscriber_email (email)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
 
 -- ----------------------------------------------------------
--- Password reset tokens table – for forgot password feature
+-- PASSWORD RESET TOKENS
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
-  id         INT UNSIGNED  NOT NULL AUTO_INCREMENT,
-  user_id    INT UNSIGNED  NOT NULL,
-  token      VARCHAR(128)  NOT NULL,
-  used       TINYINT(1)    NOT NULL DEFAULT 0,
-  created_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  expires_at DATETIME      NOT NULL,
+  id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id    INT UNSIGNED NOT NULL,
+  token      VARCHAR(128) NOT NULL,
+  used       TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  expires_at DATETIME NOT NULL,
+
   PRIMARY KEY (id),
   UNIQUE KEY uq_reset_token (token),
-  KEY fk_reset_user (user_id),
+  KEY idx_reset_user (user_id),
+
   CONSTRAINT fk_reset_user
-    FOREIGN KEY (user_id) REFERENCES users (id)
-    ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    FOREIGN KEY (user_id)
+    REFERENCES users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
 
 -- ----------------------------------------------------------
--- Tasks table – wedding planning task tracker
+-- TASKS
+-- ----------------------------------------------------------
+-- The current Tasks page uses the status field.
+-- Valid statuses:
+--   To Do
+--   In Progress
+--   Completed
+--
+-- There is intentionally NO is_done column and NO sort_order
+-- column here.
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS tasks (
-  id          INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  user_id     INT UNSIGNED   NULL,
-  title       VARCHAR(200)   NOT NULL,
-  category    VARCHAR(100)   NOT NULL DEFAULT 'General',
-  due_date    DATE           NULL,
-  priority    ENUM('Low','Medium','High') NOT NULL DEFAULT 'Medium',
-  status      ENUM('To Do','In Progress','Completed') NOT NULL DEFAULT 'To Do',
-  notes       TEXT           NULL,
-  created_at  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id     INT UNSIGNED NULL,
+  title       VARCHAR(200) NOT NULL,
+  category    VARCHAR(100) NOT NULL DEFAULT 'General',
+  due_date    DATE NULL,
+  priority    ENUM('Low','Medium','High')
+              NOT NULL DEFAULT 'Medium',
+  status      ENUM('To Do','In Progress','Completed')
+              NOT NULL DEFAULT 'To Do',
+  notes       TEXT NULL,
+  created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+              ON UPDATE CURRENT_TIMESTAMP,
+
   PRIMARY KEY (id),
-  KEY fk_tasks_user (user_id),
+  KEY idx_tasks_user (user_id),
+  KEY idx_tasks_status (status),
+  KEY idx_tasks_due_date (due_date),
+
   CONSTRAINT fk_tasks_user
-    FOREIGN KEY (user_id) REFERENCES users (id)
-    ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ----------------------------------------------------------
--- Sample task data matching the Wedora task interface
--- ----------------------------------------------------------
-INSERT INTO tasks (user_id, title, category, due_date, priority, status) VALUES
-(NULL, 'Book Wedding Hotel',   'Venue',         '2026-05-25', 'High',   'Completed'),
-(NULL, 'Select Photographer',  'Photography',   '2026-05-30', 'High',   'Completed'),
-(NULL, 'Order Wedding Cake',   'Food',          '2026-06-05', 'Medium', 'To Do'),
-(NULL, 'Send Invitations',     'Stationery',    '2026-06-10', 'Medium', 'To Do'),
-(NULL, 'Bridal Dress Fitting', 'Attire',        '2026-06-15', 'Low',    'To Do'),
-(NULL, 'Book DJ / Band',       'Entertainment', '2026-06-20', 'Low',    'To Do');
+    FOREIGN KEY (user_id)
+    REFERENCES users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
 
 
 -- ----------------------------------------------------------
--- Budget items table – Budget page (budget.html / php/budget.php)
--- Total Budget comes from wedding_details.total_budget;
--- Spent / Remaining / % used are calculated from these rows.
+-- WEDDING DETAILS
+-- ----------------------------------------------------------
+-- These columns match the Wedding Details module currently
+-- used by the project.
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS wedding_details (
+  id                INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id           INT UNSIGNED NOT NULL,
+
+  bride_name        VARCHAR(150) NULL,
+  groom_name        VARCHAR(150) NULL,
+  partner_name      VARCHAR(150) NULL,
+
+  wedding_date      DATE NULL,
+  wedding_type      VARCHAR(100) NULL,
+  wedding_venue     VARCHAR(255) NULL,
+
+  expected_guests   INT NOT NULL DEFAULT 0,
+  guests_confirmed  INT NOT NULL DEFAULT 0,
+
+  estimated_budget  DECIMAL(12,2) NOT NULL DEFAULT 0,
+  total_budget      DECIMAL(12,2) NOT NULL DEFAULT 0,
+  spent_budget      DECIMAL(12,2) NOT NULL DEFAULT 0,
+
+  theme_notes       TEXT NULL,
+  photo_path        VARCHAR(255) NULL,
+
+  vendors_saved     INT NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_wedding_details_user (user_id),
+
+  CONSTRAINT fk_wedding_details_user
+    FOREIGN KEY (user_id)
+    REFERENCES users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+
+-- ----------------------------------------------------------
+-- BUDGET ITEMS
 -- ----------------------------------------------------------
 CREATE TABLE IF NOT EXISTS budget_items (
-  id         INT UNSIGNED   NOT NULL AUTO_INCREMENT,
-  user_id    INT UNSIGNED   NOT NULL,
-  category   VARCHAR(100)   NOT NULL,
-  estimated  DECIMAL(12,2)  NOT NULL DEFAULT 0,
-  actual     DECIMAL(12,2)  NOT NULL DEFAULT 0,
-  is_paid    TINYINT(1)     NOT NULL DEFAULT 0,
-  created_at TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
-  KEY fk_budget_user (user_id),
-  CONSTRAINT fk_budget_user
-    FOREIGN KEY (user_id) REFERENCES users (id)
-    ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id    INT UNSIGNED NOT NULL,
+  category   VARCHAR(100) NOT NULL,
+  estimated  DECIMAL(12,2) NOT NULL DEFAULT 0,
+  actual     DECIMAL(12,2) NOT NULL DEFAULT 0,
+  is_paid    TINYINT(1) NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+             ON UPDATE CURRENT_TIMESTAMP,
 
--- Optional sample rows (replace 1 with a real users.id, then uncomment):
--- INSERT INTO budget_items (user_id, category, estimated, actual, is_paid) VALUES
--- (1,'Venue',400000,350000,1),(1,'Catering',300000,290000,1),
--- (1,'Photography',150000,100000,1),(1,'Attire',200000,150000,0),
--- (1,'Decorations',150000,100000,1);
+  PRIMARY KEY (id),
+  KEY idx_budget_user (user_id),
+
+  CONSTRAINT fk_budget_user
+    FOREIGN KEY (user_id)
+    REFERENCES users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+
+-- ----------------------------------------------------------
+-- PAYMENTS
+-- ----------------------------------------------------------
+-- The current Dashboard endpoint reads:
+--   payment_name
+--   amount
+--   due_date
+--   status
+-- and filters status = 'upcoming'.
+--
+-- This table is therefore defined to match that current
+-- Dashboard contract.
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS payments (
+  id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id       INT UNSIGNED NOT NULL,
+  payment_name  VARCHAR(200) NOT NULL,
+  amount        DECIMAL(12,2) NOT NULL DEFAULT 0,
+  due_date      DATE NULL,
+  status        ENUM('upcoming','paid','overdue')
+                NOT NULL DEFAULT 'upcoming',
+  notes         TEXT NULL,
+  created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+                ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+  KEY idx_payments_user (user_id),
+  KEY idx_payments_status (status),
+  KEY idx_payments_due_date (due_date),
+
+  CONSTRAINT fk_payments_user
+    FOREIGN KEY (user_id)
+    REFERENCES users (id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+
+-- ----------------------------------------------------------
+-- VENDORS
+-- ----------------------------------------------------------
+CREATE TABLE IF NOT EXISTS vendors (
+  id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name       VARCHAR(150) NOT NULL,
+  category   VARCHAR(50) NOT NULL,
+  contact    VARCHAR(30) NOT NULL,
+  price      DECIMAL(12,2) NOT NULL DEFAULT 0,
+  notes      VARCHAR(255) NULL,
+  user_id    INT UNSIGNED NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+             ON UPDATE CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (id),
+  KEY idx_vendors_category (category),
+  KEY idx_vendors_user (user_id),
+
+  CONSTRAINT fk_vendors_user
+    FOREIGN KEY (user_id)
+    REFERENCES users (id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+-- ==========================================================
+-- OPTIONAL TEST DATA
+-- ==========================================================
+-- Do NOT put sample rows here unless you have a real user ID.
+--
+-- Example:
+--
+-- INSERT INTO tasks
+--   (user_id, title, category, due_date, priority, status)
+-- VALUES
+--   (1, 'Book Wedding Hotel', 'Venue', '2026-05-25', 'High', 'Completed');
+--
+-- INSERT INTO vendors
+--   (user_id, name, category, contact, price)
+-- VALUES
+--   (1, 'Dream Studio', 'Photography', '077 123 4567', 150000.00);
+--
+-- INSERT INTO payments
+--   (user_id, payment_name, amount, due_date, status)
+-- VALUES
+--   (1, 'Wedding Hall Payment', 100000.00, '2026-06-01', 'upcoming');
+--
+-- Replace 1 with an actual users.id.
+-- ==========================================================
