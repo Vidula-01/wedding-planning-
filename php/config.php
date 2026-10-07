@@ -8,7 +8,7 @@ declare(strict_types=1);
 const DB_HOST    = 'localhost';
 const DB_NAME    = 'wedora_db';
 const DB_USER    = 'root';
-const DB_PASS    = '';
+const DB_PASS    = '1234';
 const DB_CHARSET = 'utf8mb4';
 
 function db(): PDO
