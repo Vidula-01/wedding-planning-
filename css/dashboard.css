@@ -2,6 +2,8 @@
    WEDORA - Dashboard
    ========================================================== */
 
+/* Define reusable colors and font styles for the dashboard theme. */
+
 :root {
   --maroon:      #862947;
   --maroon-dark: #6c1f39;
@@ -17,7 +19,7 @@
   --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
 }
-
+/* Reset default spacing and use predictable box sizing for all elements. */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -41,6 +43,7 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; }
 
 /* ===================== Sidebar ===================== */
+/* Keep the navigation sidebar organized vertically. */
 .sidebar {
   width: 260px;
   flex-shrink: 0;
@@ -95,6 +98,7 @@ button { font: inherit; cursor: pointer; }
 .nav-item:hover {
   background: rgba(134, 41, 71, 0.08);
 }
+/* Highlight the navigation item for the currently active page. */
 .nav-item.is-active {
   background: var(--maroon);
   color: #ffffff;
@@ -171,6 +175,7 @@ button { font: inherit; cursor: pointer; }
 }
 
 /* ===================== Welcome banner ===================== */
+/* Style the welcome section with a soft background and flexible layout. */
 .welcome-banner {
   position: relative;
   background: linear-gradient(120deg, var(--rose-bg) 0%, #fbdde0 100%);
@@ -183,7 +188,7 @@ button { font: inherit; cursor: pointer; }
   overflow: hidden;
   flex-wrap: wrap;
 }
-
+/* Add a decorative flower to the welcome banner without blocking interactions. */
 .welcome-banner::after {
   content: '🌸';
   position: absolute;
@@ -252,6 +257,7 @@ button { font: inherit; cursor: pointer; }
 }
 
 /* ===================== Stat cards ===================== */
+/* Arrange dashboard summary cards in a grid on larger screens. */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -323,6 +329,7 @@ button { font: inherit; cursor: pointer; }
 }
 
 /* ===================== Two column panels ===================== */
+/* Place dashboard information panels side by side when space allows. */
 .panels-grid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
@@ -501,11 +508,12 @@ button { font: inherit; cursor: pointer; }
 }
 
 /* ===================== Responsive ===================== */
+/* Adjust dashboard grids for medium-sized screens. */
 @media (max-width: 1100px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .panels-grid { grid-template-columns: 1fr; }
 }
-
+/* Adapt the sidebar and content layout for smaller screens. */
 @media (max-width: 860px) {
   .sidebar {
     position: fixed;
@@ -521,7 +529,7 @@ button { font: inherit; cursor: pointer; }
   .welcome-banner { flex-direction: column; align-items: flex-start; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
 }
-
+/* Stack statistic cards vertically on narrow mobile screens. */
 @media (max-width: 520px) {
   .stats-grid { grid-template-columns: 1fr; }
   .date-card { flex-wrap: wrap; }
