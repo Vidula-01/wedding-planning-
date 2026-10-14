@@ -526,3 +526,40 @@ button { font: inherit; cursor: pointer; }
   .stats-grid { grid-template-columns: 1fr; }
   .date-card { flex-wrap: wrap; }
 }
+/* Dashboard responsiveness improvements */
+
+.stat-card,
+.panel {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(134, 41, 71, 0.12);
+}
+
+.nav-item:focus-visible,
+.btn-logout:focus-visible,
+.hamburger:focus-visible {
+    outline: 3px solid var(--plum);
+    outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+    .content {
+        padding: 12px 14px 28px;
+    }
+
+    .welcome-banner {
+        padding: 22px 20px;
+    }
+
+    .welcome-text h1 {
+        font-size: 25px;
+    }
+
+    .stat-card,
+    .panel {
+        padding: 18px;
+    }
+}
