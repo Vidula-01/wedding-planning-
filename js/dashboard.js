@@ -1,124 +1,680 @@
 /* ==========================================================
    WEDORA - Dashboard page logic
-   Pulls live data from php/dashboard_data.php (MySQL backed)
-   and renders it into the page. Redirects to login if the
-   user isn't authenticated.
+   Pulls live data from php/dashboard_data.php
    ========================================================== */
+
 (() => {
-  'use strict';
 
-  const statusEl = document.getElementById('dashStatus');
-  const bodyEl   = document.getElementById('dashBody');
+    'use strict';
 
-  function show(el) { el.style.display = ''; }
-  function hide(el) { el.style.display = 'none'; }
 
-  async function loadDashboard() {
-    try {
-      const res = await fetch('php/dashboard_data.php', {
-        headers: { Accept: 'application/json' },
-        credentials: 'same-origin'
-      });
+    /* ======================================================
+       ELEMENTS
+       ====================================================== */
 
-      if (res.status === 401) {
-        window.location.href = 'login.html';
-        return;
-      }
+    const statusEl =
+        document.getElementById(
+            'dashStatus'
+        );
 
-      const data = await res.json();
 
-      if (!data.success) {
-        statusEl.textContent = data.message || 'Could not load your dashboard.';
-        return;
-      }
+    const bodyEl =
+        document.getElementById(
+            'dashBody'
+        );
 
-      render(data);
-      hide(statusEl);
-      show(bodyEl);
-    } catch (err) {
-      statusEl.textContent = 'Could not reach the server. Make sure Apache and MySQL are running, then refresh the page.';
-    }
-  }
 
-  function render(data) {
-    document.getElementById('coupleName').textContent = data.user.couple_name + ' 💕';
-    document.getElementById('weddingDate').textContent = data.wedding.date;
-    document.getElementById('daysToGo').textContent =
-      data.wedding.days_to_go === null ? '—' : data.wedding.days_to_go;
+    /* ======================================================
+       SHOW / HIDE
+       ====================================================== */
 
-    /* ---- Tasks stat card ---- */
-    const s = data.stats;
-    document.getElementById('tasksValue').textContent = `${s.tasks_done} / ${s.tasks_total}`;
-    document.getElementById('tasksBar').style.width = `${s.tasks_progress}%`;
-    document.getElementById('tasksPct').textContent = `${s.tasks_progress}%`;
+    function show(el) {
 
-    /* ---- Budget stat card ---- */
-    document.getElementById('budgetSpentValue').textContent = s.budget_spent;
-    document.getElementById('budgetBar').style.width = `${s.budget_pct}%`;
-    document.getElementById('budgetCaption').textContent = `${s.budget_pct}% of Rs ${s.budget_total}`;
-    document.getElementById('budgetPct').textContent = `${s.budget_pct}%`;
+        if (el) {
+            el.style.display = '';
+        }
 
-    /* ---- Guests / Vendors stat cards ---- */
-    document.getElementById('guestsValue').textContent = s.guests_confirmed;
-    document.getElementById('vendorsValue').textContent = s.vendors_saved;
-
-    /* ---- Upcoming tasks list ---- */
-    const taskList = document.getElementById('taskList');
-    if (data.upcoming_tasks.length === 0) {
-      taskList.innerHTML = '<p class="empty-note">No upcoming tasks — you\'re all caught up!</p>';
-    } else {
-      taskList.innerHTML = data.upcoming_tasks.map((t) => `
-        <div class="task-row">
-          <span class="task-dot"></span>
-          <span class="task-title">${escapeHtml(t.title)}</span>
-          <span class="task-date">${escapeHtml(t.due_date)}</span>
-        </div>
-      `).join('');
     }
 
-    /* ---- Budget overview donut ---- */
-    const bo = data.budget_overview;
-    const pct = Math.min(Math.max(bo.spent_pct, 0), 100);
-    const donut = document.getElementById('donutChart');
-    donut.style.background =
-      `conic-gradient(var(--maroon) 0% ${pct}%, #f2c9cf ${pct}% 100%)`;
-    document.getElementById('donutSpent').textContent = bo.spent.replace('Rs. ', '');
-    document.getElementById('legendTotal').textContent = bo.total;
-    document.getElementById('legendSpent').textContent = bo.spent;
-    document.getElementById('legendRemaining').textContent = bo.remaining;
 
-    /* ---- Upcoming payments ---- */
-    const paymentsList = document.getElementById('paymentsList');
-    if (data.upcoming_payments.length === 0) {
-      paymentsList.innerHTML = '<p class="empty-note">No upcoming payments.</p>';
-    } else {
-      paymentsList.innerHTML = data.upcoming_payments.map((p) => `
-        <div class="payment-row">
-          <span class="payment-name">${escapeHtml(p.name)}</span>
-          <span class="payment-amount">${escapeHtml(p.amount)}</span>
-          <span class="payment-date">${escapeHtml(p.due_date)}</span>
-        </div>
-      `).join('');
+    function hide(el) {
+
+        if (el) {
+            el.style.display = 'none';
+        }
+
     }
-  }
 
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str ?? '';
-    return div.innerHTML;
-  }
 
-  /* ---------- sidebar toggle (mobile) ---------- */
-  const sidebar     = document.getElementById('sidebar');
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  hamburgerBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('is-open');
-  });
+    /* ======================================================
+       LOAD DASHBOARD
+       ====================================================== */
 
-  /* ---------- logout ---------- */
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    window.location.href = 'php/logout.php';
-  });
+    async function loadDashboard() {
 
-  loadDashboard();
+        try {
+
+            const res =
+                await fetch(
+                    'php/dashboard_data.php',
+                    {
+                        method: 'GET',
+
+                        headers: {
+                            'Accept':
+                                'application/json'
+                        },
+
+                        credentials:
+                            'same-origin'
+                    }
+                );
+
+
+            /* ---------- Login ---------- */
+
+            if (res.status === 401) {
+
+                window.location.href =
+                    'login.html';
+
+                return;
+            }
+
+
+            /* ---------- Server error ---------- */
+
+            if (!res.ok) {
+
+                throw new Error(
+                    'Server response: ' +
+                    res.status
+                );
+
+            }
+
+
+            /* ---------- Read JSON ---------- */
+
+            const data =
+                await res.json();
+
+
+            console.log(
+                'Dashboard response:',
+                data
+            );
+
+
+            /* ---------- Check success ---------- */
+
+            if (!data.success) {
+
+                if (statusEl) {
+
+                    statusEl.textContent =
+                        data.message ||
+                        'Could not load your dashboard.';
+
+                    statusEl.style.display =
+                        'block';
+                }
+
+                return;
+            }
+
+
+            /* ---------- Render ---------- */
+
+            render(data);
+
+
+            hide(statusEl);
+
+            show(bodyEl);
+
+        }
+
+
+        catch (error) {
+
+            console.error(
+                'Dashboard loading error:',
+                error
+            );
+
+
+            if (statusEl) {
+
+                statusEl.textContent =
+                    'Could not reach the server. ' +
+                    'Make sure Apache and MySQL are running, ' +
+                    'then refresh the page.';
+
+                statusEl.style.display =
+                    'block';
+            }
+
+        }
+
+    }
+
+
+    /* ======================================================
+       RENDER DASHBOARD
+       ====================================================== */
+
+    function render(data) {
+
+
+        /* ==================================================
+           WELCOME / COUPLE NAME
+           ================================================== */
+
+        const coupleName =
+            document.getElementById(
+                'coupleName'
+            );
+
+
+        if (coupleName) {
+
+            coupleName.textContent =
+                (
+                    data.user?.couple_name ||
+                    data.user?.full_name ||
+                    ''
+                ) +
+                ' 💕';
+
+        }
+
+
+        /* ==================================================
+           WEDDING DATE
+           ================================================== */
+
+        const weddingDate =
+            document.getElementById(
+                'weddingDate'
+            );
+
+
+        if (weddingDate) {
+
+            weddingDate.textContent =
+                data.wedding?.date ||
+                'Not set yet';
+
+        }
+
+
+        /* ==================================================
+           DAYS TO GO
+           ================================================== */
+
+        const daysToGo =
+            document.getElementById(
+                'daysToGo'
+            );
+
+
+        if (daysToGo) {
+
+            daysToGo.textContent =
+                data.wedding?.days_to_go === null ||
+                data.wedding?.days_to_go === undefined
+                    ? '—'
+                    : data.wedding.days_to_go;
+
+        }
+
+
+        /* ==================================================
+           STATS
+           ================================================== */
+
+        const s =
+            data.stats || {};
+
+
+        /* ---------- Tasks ---------- */
+
+        const tasksValue =
+            document.getElementById(
+                'tasksValue'
+            );
+
+
+        if (tasksValue) {
+
+            tasksValue.textContent =
+                `${s.tasks_done || 0} / ${s.tasks_total || 0}`;
+
+        }
+
+
+        const tasksBar =
+            document.getElementById(
+                'tasksBar'
+            );
+
+
+        if (tasksBar) {
+
+            tasksBar.style.width =
+                `${s.tasks_progress || 0}%`;
+
+        }
+
+
+        const tasksPct =
+            document.getElementById(
+                'tasksPct'
+            );
+
+
+        if (tasksPct) {
+
+            tasksPct.textContent =
+                `${s.tasks_progress || 0}%`;
+
+        }
+
+
+        /* ---------- Budget ---------- */
+
+        const budgetSpentValue =
+            document.getElementById(
+                'budgetSpentValue'
+            );
+
+
+        if (budgetSpentValue) {
+
+            budgetSpentValue.textContent =
+                s.budget_spent ||
+                'Rs. 0';
+
+        }
+
+
+        const budgetBar =
+            document.getElementById(
+                'budgetBar'
+            );
+
+
+        if (budgetBar) {
+
+            budgetBar.style.width =
+                `${s.budget_pct || 0}%`;
+
+        }
+
+
+        const budgetCaption =
+            document.getElementById(
+                'budgetCaption'
+            );
+
+
+        if (budgetCaption) {
+
+            budgetCaption.textContent =
+                `${s.budget_pct || 0}% of Rs ${s.budget_total || 0}`;
+
+        }
+
+
+        const budgetPct =
+            document.getElementById(
+                'budgetPct'
+            );
+
+
+        if (budgetPct) {
+
+            budgetPct.textContent =
+                `${s.budget_pct || 0}%`;
+
+        }
+
+
+        /* ---------- Guests ---------- */
+
+        const guestsValue =
+            document.getElementById(
+                'guestsValue'
+            );
+
+
+        if (guestsValue) {
+
+            guestsValue.textContent =
+                s.guests_confirmed || 0;
+
+        }
+
+
+        /* ---------- Vendors ---------- */
+
+        const vendorsValue =
+            document.getElementById(
+                'vendorsValue'
+            );
+
+
+        if (vendorsValue) {
+
+            vendorsValue.textContent =
+                s.vendors_saved || 0;
+
+        }
+
+
+        /* ==================================================
+           UPCOMING TASKS
+           ================================================== */
+
+        const taskList =
+            document.getElementById(
+                'taskList'
+            );
+
+
+        if (taskList) {
+
+            const tasks =
+                data.upcoming_tasks || [];
+
+
+            if (tasks.length === 0) {
+
+                taskList.innerHTML =
+                    '<p class="empty-note">' +
+                    "No upcoming tasks — you are all caught up!" +
+                    '</p>';
+
+            } else {
+
+                taskList.innerHTML =
+                    tasks
+                        .map((t) => `
+
+                            <div class="task-row">
+
+                                <span class="task-dot"></span>
+
+                                <span class="task-title">
+                                    ${escapeHtml(t.title)}
+                                </span>
+
+                                <span class="task-date">
+                                    ${escapeHtml(t.due_date)}
+                                </span>
+
+                            </div>
+
+                        `)
+                        .join('');
+
+            }
+
+        }
+
+
+        /* ==================================================
+           BUDGET OVERVIEW
+           ================================================== */
+
+        const bo =
+            data.budget_overview || {};
+
+
+        const pct =
+            Math.min(
+                Math.max(
+                    Number(
+                        bo.spent_pct || 0
+                    ),
+                    0
+                ),
+                100
+            );
+
+
+        const donut =
+            document.getElementById(
+                'donutChart'
+            );
+
+
+        if (donut) {
+
+            donut.style.background =
+                `conic-gradient(
+                    var(--maroon)
+                    0% ${pct}%,
+                    #f2c9cf
+                    ${pct}% 100%
+                )`;
+
+        }
+
+
+        const donutSpent =
+            document.getElementById(
+                'donutSpent'
+            );
+
+
+        if (donutSpent) {
+
+            donutSpent.textContent =
+                (
+                    bo.spent ||
+                    'Rs. 0'
+                ).replace(
+                    'Rs. ',
+                    ''
+                );
+
+        }
+
+
+        const legendTotal =
+            document.getElementById(
+                'legendTotal'
+            );
+
+
+        if (legendTotal) {
+
+            legendTotal.textContent =
+                bo.total ||
+                'Rs. 0';
+
+        }
+
+
+        const legendSpent =
+            document.getElementById(
+                'legendSpent'
+            );
+
+
+        if (legendSpent) {
+
+            legendSpent.textContent =
+                bo.spent ||
+                'Rs. 0';
+
+        }
+
+
+        const legendRemaining =
+            document.getElementById(
+                'legendRemaining'
+            );
+
+
+        if (legendRemaining) {
+
+            legendRemaining.textContent =
+                bo.remaining ||
+                'Rs. 0';
+
+        }
+
+
+        /* ==================================================
+           UPCOMING PAYMENTS
+           ================================================== */
+
+        const paymentsList =
+            document.getElementById(
+                'paymentsList'
+            );
+
+
+        if (paymentsList) {
+
+            const payments =
+                data.upcoming_payments || [];
+
+
+            if (payments.length === 0) {
+
+                paymentsList.innerHTML =
+                    '<p class="empty-note">' +
+                    'No upcoming payments.' +
+                    '</p>';
+
+            } else {
+
+                paymentsList.innerHTML =
+                    payments
+                        .map((p) => `
+
+                            <div class="payment-row">
+
+                                <span class="payment-name">
+                                    ${escapeHtml(p.name)}
+                                </span>
+
+                                <span class="payment-amount">
+                                    ${escapeHtml(p.amount)}
+                                </span>
+
+                                <span class="payment-date">
+                                    ${escapeHtml(p.due_date)}
+                                </span>
+
+                            </div>
+
+                        `)
+                        .join('');
+
+            }
+
+        }
+
+    }
+
+
+    /* ======================================================
+       ESCAPE HTML
+       ====================================================== */
+
+    function escapeHtml(str) {
+
+        const div =
+            document.createElement(
+                'div'
+            );
+
+
+        div.textContent =
+            str ?? '';
+
+
+        return div.innerHTML;
+
+    }
+
+
+    /* ======================================================
+       SIDEBAR / HAMBURGER
+       ====================================================== */
+
+    const sidebar =
+        document.getElementById(
+            'sidebar'
+        );
+
+
+    const hamburgerBtn =
+        document.getElementById(
+            'hamburgerBtn'
+        );
+
+
+    if (
+        sidebar &&
+        hamburgerBtn
+    ) {
+
+        hamburgerBtn.addEventListener(
+            'click',
+            () => {
+
+                sidebar.classList.toggle(
+                    'is-open'
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ======================================================
+       LOGOUT
+       ====================================================== */
+
+    const logoutBtn =
+        document.getElementById(
+            'logoutBtn'
+        );
+
+
+    if (logoutBtn) {
+
+        logoutBtn.addEventListener(
+            'click',
+            () => {
+
+                window.location.href =
+                    'php/logout.php';
+
+            }
+        );
+
+    }
+
+/* ======================================================
+   START
+   ====================================================== */
+
+loadDashboard();
+
+/*
+ * Refresh dashboard data every 5 seconds.
+ * This keeps Tasks and Wedding Details updated.
+ */
+setInterval(() => {
+    loadDashboard();
+}, 5000);
+
 })();

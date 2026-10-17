@@ -13,58 +13,57 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/app-shell.css">
 </head>
 
 <body>
 
   <!-- ===== Sidebar ===== -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
+  <div class="sidebar-logo">
+    <a href="dashboard.html" aria-label="WEDORA home">
       <img src="images/logo.png" alt="WEDORA - Plan Your Perfect Beginning">
-    </div>
+    </a>
+  </div>
 
-    <nav class="sidebar-nav" aria-label="Dashboard navigation">
-      <a href="dashboard.html" class="nav-item is-active">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
-        Dashboard
+  <nav class="sidebar-nav" aria-label="Dashboard navigation">
+      <a href="dashboard.html" class="nav-item is-active" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <span>Dashboard</span>
       </a>
       <a href="wedding-details.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg>
-        Wedding Details
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18"/></svg>
+        <span>Wedding Details</span>
       </a>
       <a href="tasks.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1z"/><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 12h6M9 16h6"/></svg>
-        Tasks
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1z"/><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 12h6M9 16h6"/></svg>
+        <span>Tasks</span>
       </a>
       <a href="budget.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        Budget
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span>Budget</span>
       </a>
       <a href="vendors.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9"/><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 20v-5h6v5"/></svg>
-        Vendors
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 20v-5h6v5"/></svg>
+        <span>Vendors</span>
       </a>
       <a href="guests.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="18" cy="9" r="2.5"/><path d="M15.5 20c.3-2.5 2-4.5 4.5-4.9"/></svg>
-        Guests
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="18" cy="9" r="2.5"/><path d="M15.5 20c.3-2.5 2-4.5 4.5-4.9"/></svg>
+        <span>Guests</span>
       </a>
       <a href="profile.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
-        Profile
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        <span>Profile</span>
       </a>
-      <a href="faq.html" class="nav-item">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 1 1 4.6 2.5c-.9.6-1.7 1.1-1.7 2.5"/><path d="M12 17h.01"/></svg>
-        FQA
-      </a>
-    </nav>
+  </nav>
 
-    <div class="sidebar-footer">
-      <button type="button" class="btn-logout" id="logoutBtn">
-        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-        Log out
-      </button>
-    </div>
-  </aside>
+  <div class="sidebar-footer">
+    <button type="button" class="btn-logout" id="logoutBtn" title="Log out">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      <span>Log out</span>
+    </button>
+  </div>
+</aside>
 
   <!-- ===== Main content ===== -->
   <div class="main">
@@ -132,7 +131,7 @@
 
           <div class="stat-card">
             <div class="stat-head">
-              Budget Used
+              Guests Confirmed
               <svg class="icon-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="7" r="2.4"/></svg>
             </div>
             <div class="stat-value" id="guestsValue">0</div>
@@ -141,7 +140,7 @@
 
           <div class="stat-card">
             <div class="stat-head">
-              Budget Used
+              Vendors Saved
               <svg class="icon-store" viewBox="0 0 24 24"><path d="M3 9l1.3-4.5A1 1 0 0 1 5.3 4h13.4a1 1 0 0 1 1 .8L21 9"/><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M9 20v-5h6v5"/></svg>
             </div>
             <div class="stat-value" id="vendorsValue">0</div>
@@ -155,7 +154,7 @@
           <div class="panel">
             <div class="panel-head">
               <h2>Upcoming Tasks</h2>
-              <a href="#">View All</a>
+              <a href="tasks.html">View All</a>
             </div>
             <div class="task-list" id="taskList">
               <p class="empty-note">No upcoming tasks yet.</p>
@@ -166,7 +165,7 @@
             <div class="panel">
               <div class="panel-head">
                 <h2>Budget Overview</h2>
-                <a href="#">View Report</a>
+                <a href="budget.html">View Report</a>
               </div>
               <div class="budget-body">
                 <div class="donut-wrap" id="donutChart">
@@ -199,7 +198,7 @@
             <div class="panel payments-panel">
               <div class="panel-head">
                 <h2>Upcoming Payments</h2>
-                <a href="#">View All</a>
+                <a href="budget.html#payments">View All</a>
               </div>
               <div id="paymentsList">
                 <p class="empty-note">No upcoming payments.</p>

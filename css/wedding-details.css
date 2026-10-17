@@ -1,113 +1,464 @@
 /* ==========================================================
-   WEDORA - Wedding Details page
-   Loaded after dashboard.css and profile.css, so it reuses the
-   same tokens and the same .panel / .field / .btn-save
-   primitives — only what's new for this page lives here.
+   WEDORA - Wedding Details Page
    ========================================================== */
 
-/* ===================== Mini summary banner ===================== */
-.wd-summary {
-  position: relative;
-  background: linear-gradient(120deg, var(--rose-bg) 0%, #fbdde0 100%);
-  border-radius: 22px;
-  padding: 22px 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-.wd-summary::after {
-  content: '💐';
-  position: absolute;
-  right: 22px;
-  bottom: -14px;
-  font-size: 70px;
-  opacity: 0.3;
-  pointer-events: none;
-}
-.wd-summary-text .eyebrow {
-  font-size: 13px;
-  font-weight: 600;
-  color: #4a2634;
-  margin-bottom: 2px;
-}
-.wd-summary-text h2 {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--maroon-dark);
-}
-.wd-summary .date-card {
-  z-index: 1;
+.wedding-details-page {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 28px 30px;
+    box-sizing: border-box;
 }
 
-/* ===================== Form grid ===================== */
-.wd-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-bottom: 18px;
-}
-.wd-grid .form-panel.full-span {
-  grid-column: 1 / -1;
+/* ==========================================================
+   PAGE TITLE
+   ========================================================== */
+
+.wedding-details-page h1 {
+    margin: 0 0 18px;
+
+    font-family: var(--font-display);
+    font-size: 38px;
+    line-height: 1.15;
+    font-weight: 700;
+
+    color: var(--maroon-dark);
 }
 
-/* ===================== Textarea ===================== */
-.field textarea {
-  width: 100%;
-  min-height: 110px;
-  padding: 12px 14px;
-  font-family: var(--font-body);
-  font-size: 14px;
-  color: var(--ink);
-  background: #fff;
-  border: 1.4px solid var(--line);
-  border-radius: 10px;
-  resize: vertical;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  box-sizing: border-box;
-}
-.field textarea:hover { border-color: #d3b9c2; }
-.field textarea:focus {
-  outline: none;
-  border-color: var(--maroon);
-  box-shadow: 0 0 0 3px rgba(134, 41, 71, 0.12);
+/* ==========================================================
+   MAIN CARD
+   ========================================================== */
+
+.wedding-details-card {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: minmax(360px, 42%) minmax(0, 58%);
+    gap: 26px;
+
+    background: #fffafa;
+    border: 1px solid #e7b6bf;
+    border-radius: 2px;
+
+    padding: 18px;
+
+    min-height: auto;
+
+    align-items: start;
 }
 
-/* ===================== Section icon badges ===================== */
-.form-panel .panel-head .panel-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: var(--rose-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.form-panel .panel-head .panel-icon svg {
-  width: 18px;
-  height: 18px;
-  stroke: var(--maroon);
-  fill: none;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.form-panel .panel-head-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* ==========================================================
+   LEFT SIDE - PHOTO
+   ========================================================== */
+
+.wedding-photo-section {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* ===================== Responsive ===================== */
-@media (max-width: 1100px) {
-  .wd-grid { grid-template-columns: 1fr; }
+/* Image */
+
+.wedding-photo {
+    width: 100%;
+    height: 500px;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 10px;
+    border: 1px solid #e1aab5;
+
+    box-sizing: border-box;
 }
 
-@media (max-width: 620px) {
-  .wd-summary { padding: 20px; }
+/* ==========================================================
+   CHANGE PHOTO BUTTON
+   ========================================================== */
+
+.change-photo-btn {
+    width: 72%;
+    max-width: 280px;
+    min-width: 220px;
+
+    height: 48px;
+
+    margin-top: 14px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #92284f;
+    color: #ffffff;
+
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 500;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.change-photo-btn:hover {
+    background: #7d2143;
+}
+
+.change-photo-btn svg {
+    width: 21px;
+    height: 21px;
+    flex-shrink: 0;
+}
+
+/* ==========================================================
+   RIGHT SIDE FORM
+   ========================================================== */
+
+.wedding-form-section {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.wedding-form {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ==========================================================
+   FORM FIELD
+   ========================================================== */
+
+.wedding-field {
+    width: 100%;
+    margin-bottom: 11px;
+    box-sizing: border-box;
+}
+
+.wedding-field label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #92284f;
+
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 500;
+}
+
+/* ==========================================================
+   INPUT / SELECT / TEXTAREA
+   ========================================================== */
+
+.wedding-field input,
+.wedding-field select,
+.wedding-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+
+    height: 45px;
+
+    padding: 0 13px;
+
+    border: 1px solid #c9c9c9;
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #171717;
+
+    font-family: var(--font-body);
+    font-size: 15px;
+
+    outline: none;
+}
+
+.wedding-field input:focus,
+.wedding-field select:focus,
+.wedding-field textarea:focus {
+    border-color: #92284f;
+
+    box-shadow:
+        0 0 0 2px rgba(146, 40, 79, 0.10);
+}
+
+/* ==========================================================
+   TEXTAREA
+   ========================================================== */
+
+.wedding-field textarea {
+    height: 65px;
+
+    padding: 10px 13px;
+
+    resize: none;
+}
+
+/* ==========================================================
+   TWO COLUMN FIELDS
+   ========================================================== */
+
+.wedding-two-fields {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 16px;
+}
+
+/* ==========================================================
+   ERROR MESSAGE
+   ========================================================== */
+
+.field-error {
+    display: block;
+
+    min-height: 0;
+
+    margin-top: 3px;
+
+    color: #b3261e;
+    font-size: 12px;
+}
+
+/* ==========================================================
+   FORM BOTTOM
+   ========================================================== */
+
+.wedding-form-bottom {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 15px;
+
+    margin-top: 5px;
+}
+
+.form-status {
+    font-size: 13px;
+}
+
+/* ==========================================================
+   SAVE BUTTON
+   ========================================================== */
+
+.save-wedding-btn {
+    width: 235px;
+    height: 46px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: #92284f;
+    color: #ffffff;
+
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    transition: background 0.2s ease;
+}
+
+.save-wedding-btn:hover {
+    background: #7d2143;
+}
+
+.save-wedding-btn svg {
+    width: 19px;
+    height: 19px;
+}
+
+/* ==========================================================
+   REMOVE UNWANTED EMPTY ELEMENTS
+   ========================================================== */
+
+.wedding-details-card::before,
+.wedding-details-card::after {
+    display: none !important;
+}
+
+.empty-state {
+    display: none !important;
+}
+
+/* ==========================================================
+   REMOVE TOP HAMBURGER
+   ========================================================== */
+
+/*
+   Wedding Details page එකේ desktop එකේ
+   උඩ තියෙන ඉරි 3 නොපෙන්වීමට.
+*/
+
+@media (min-width: 901px) {
+
+    .wedding-details-page ~ * {
+        display: none;
+    }
+
+    .topbar .hamburger {
+        display: none !important;
+    }
+}
+
+/* ==========================================================
+   LARGE SCREENS
+   ========================================================== */
+
+@media (min-width: 1400px) {
+
+    .wedding-details-page {
+        max-width: 1500px;
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    .wedding-details-card {
+        grid-template-columns: 40% 60%;
+        gap: 24px;
+        padding: 18px;
+    }
+
+    .wedding-photo {
+        height: 500px;
+    }
+}
+
+/* ==========================================================
+   MEDIUM SCREENS
+   ========================================================== */
+
+@media (max-width: 1200px) {
+
+    .wedding-details-page {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .wedding-details-page h1 {
+        font-size: 34px;
+    }
+
+    .wedding-details-card {
+        grid-template-columns: 39% 61%;
+        gap: 18px;
+        padding: 16px;
+    }
+
+    .wedding-photo {
+        height: 470px;
+    }
+
+    .wedding-field label {
+        font-size: 16px;
+    }
+
+    .wedding-field input,
+    .wedding-field select,
+    .wedding-field textarea {
+        font-size: 14px;
+    }
+}
+
+/* ==========================================================
+   TABLET
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+    .wedding-details-page {
+        padding: 0 18px 25px;
+    }
+
+    .wedding-details-page h1 {
+        font-size: 32px;
+    }
+
+    .wedding-details-card {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .wedding-photo {
+        height: 400px;
+    }
+
+    .wedding-form-section {
+        width: 100%;
+    }
+
+    .wedding-two-fields {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .topbar .hamburger {
+        display: flex;
+    }
+}
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 600px) {
+
+    .wedding-details-page {
+        padding: 0 12px 20px;
+    }
+
+    .wedding-details-page h1 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .wedding-details-card {
+        padding: 12px;
+    }
+
+    .wedding-photo {
+        height: 300px;
+    }
+
+    .wedding-two-fields {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .change-photo-btn {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .wedding-form-bottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .save-wedding-btn {
+        width: 100%;
+    }
 }

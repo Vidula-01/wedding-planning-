@@ -77,3 +77,18 @@
   .budget-table td { font-size: 14px; padding: 14px 8px; }
   .budget-table thead th { font-size: 13px; }
 }
+
+/* Payments section */
+.payments-section{margin-top:28px;padding-bottom:30px}
+.payments-section-head{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:14px}
+.payments-section-head h2{margin:0;color:var(--maroon-dark);font-family:var(--font-display);font-size:25px}
+.payments-section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.payments-table .payment-status{display:inline-flex;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.payment-status.status-upcoming{background:#fbe3e5;color:var(--maroon)}
+.payment-status.status-paid{background:#e7f5ed;color:#1f7a4d}
+.payment-status.status-overdue{background:#fdeaea;color:#b3261e}
+.payment-edit{border:0;background:transparent;color:var(--maroon);font-weight:700;cursor:pointer;margin-right:10px}
+.payment-edit:hover{text-decoration:underline}
+#paymentNotes{width:100%;resize:vertical;border:1px solid #ddd;border-radius:10px;padding:10px;font:inherit}
+#paymentStatus{width:100%;height:44px;border:1px solid #ddd;border-radius:10px;padding:0 12px;font:inherit;background:#fff}
+@media(max-width:700px){.payments-section-head{align-items:flex-start;flex-direction:column}.payments-section-head .btn-add-task{width:100%}.payments-table{min-width:700px}}
