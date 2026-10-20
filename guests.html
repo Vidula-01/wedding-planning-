@@ -1,6 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Guests – Wedora</title>
@@ -11,9 +14,10 @@
   <link rel="stylesheet" href="css/guests.css" />
   <link rel="stylesheet" href="css/app-shell.css">
 </head>
+
 <body>
 
-<!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+<!--  SIDEBAR  -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <a href="dashboard.html" aria-label="WEDORA home">
@@ -60,7 +64,7 @@
   </div>
 </aside>
 
-<!-- ═══════════════════════ MAIN CONTENT ═══════════════════════ -->
+<!-- MAIN CONTENT -->
 <main class="main-content">
 
   <!-- Top bar -->
@@ -78,33 +82,40 @@
       <div class="summary-icon icon-blue">
         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       </div>
+
       <div class="summary-info">
         <span class="summary-label">Total Guests</span>
         <span class="summary-value" id="countTotal">–</span>
       </div>
     </div>
+
     <div class="summary-card">
       <div class="summary-icon icon-green">
         <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
       </div>
+
       <div class="summary-info">
         <span class="summary-label">Confirmed</span>
         <span class="summary-value" id="countConfirmed">–</span>
       </div>
     </div>
+
     <div class="summary-card">
       <div class="summary-icon icon-pink">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       </div>
+
       <div class="summary-info">
         <span class="summary-label">Pending</span>
         <span class="summary-value" id="countPending">–</span>
       </div>
     </div>
+
     <div class="summary-card">
       <div class="summary-icon icon-orange">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>
       </div>
+
       <div class="summary-info">
         <span class="summary-label">Not Attending</span>
         <span class="summary-value" id="countNotAttending">–</span>
@@ -118,18 +129,21 @@
       <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" id="searchInput" class="filter-input search-input" placeholder="Search guest..." />
     </div>
+
     <select id="filterSide" class="filter-input filter-select">
       <option value="All Side">All Side</option>
       <option value="Bride Side">Bride Side</option>
       <option value="Groom Side">Groom Side</option>
       <option value="Both">Both</option>
     </select>
+
     <select id="filterStatus" class="filter-input filter-select">
       <option value="All Status">All Status</option>
       <option value="Confirmed">Confirmed</option>
       <option value="Pending">Pending</option>
       <option value="Not Attending">Not Attending</option>
     </select>
+
     <select id="filterCategory" class="filter-input filter-select">
       <option value="All Category">All Category</option>
       <option value="Family">Family</option>
@@ -152,6 +166,7 @@
           <th>Action</th>
         </tr>
       </thead>
+
       <tbody id="guestTableBody">
         <tr class="loading-row"><td colspan="6">Loading guests...</td></tr>
       </tbody>
@@ -160,13 +175,14 @@
 
 </main>
 
-<!-- ═══════════════════════ ADD / EDIT MODAL ═══════════════════════ -->
+<!--  ADD / EDIT MODAL -->
 <div class="modal-backdrop" id="guestModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-card">
     <div class="modal-header">
       <h2 class="modal-title" id="modalTitle">Add Guest</h2>
       <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close">&#x2715;</button>
     </div>
+
     <form class="modal-body" id="guestForm" novalidate>
       <input type="hidden" id="guestId" />
 
@@ -176,6 +192,7 @@
           <input type="text" id="fieldName" placeholder="e.g. Mr. Sunil Fernando" required />
           <span class="field-error" id="errName"></span>
         </div>
+
         <div class="form-field">
           <label for="fieldPhone">Phone</label>
           <input type="tel" id="fieldPhone" placeholder="0771234567" />
@@ -187,6 +204,7 @@
           <label for="fieldEmail">Email</label>
           <input type="email" id="fieldEmail" placeholder="guest@example.com" />
         </div>
+
         <div class="form-field">
           <label for="fieldSide">Side</label>
           <select id="fieldSide">
@@ -207,6 +225,7 @@
             <option value="Other">Other</option>
           </select>
         </div>
+
         <div class="form-field">
           <label for="fieldInvitation">Invitation</label>
           <select id="fieldInvitation">
@@ -244,13 +263,14 @@
   </div>
 </div>
 
-<!-- ═══════════════════════ DELETE CONFIRM MODAL ═══════════════════════ -->
+<!-- DELETE CONFIRM MODAL  -->
 <div class="modal-backdrop" id="deleteModal" role="dialog" aria-modal="true">
   <div class="modal-card confirm-card">
     <div class="modal-header">
       <h2 class="modal-title">Delete Guest?</h2>
       <button class="modal-close-btn" id="deleteCloseBtn" aria-label="Close">&#x2715;</button>
     </div>
+    
     <div class="modal-body">
       <p class="confirm-text">Are you sure you want to remove <strong id="deleteGuestName"></strong> from the guest list? This cannot be undone.</p>
       <div class="modal-actions">
