@@ -1,0 +1,725 @@
+/* ==========================================================
+   WEDORA – Tasks Page Stylesheet
+   Faithfully matching the exact design, colors, typography,
+   and visual details of the Wedora Tasks mockup.
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  /* Brand Maroon / Burgundy Palette from image */
+  --wedora-maroon:       #822544;
+  --wedora-maroon-dark:  #6a1c35;
+  --wedora-maroon-hover: #962c50;
+  
+  /* Backgrounds & Rosy Accents from image */
+  --bg-sidebar:          #fdf7f8;
+  --bg-main:             #ffffff;
+  --bg-card:             #fbf3f5;
+  --bg-tab-inactive:     #faeef1;
+  --bg-logout:           #fef2f4;
+  
+  /* Borders */
+  --border-sidebar:      #f7e8ec;
+  --border-divider:      #f3e5e8;
+  --border-card:         #f5e3e8;
+  --border-logout:       #f9cbd2;
+  --border-row:          #f6ebef;
+
+  /* Typography */
+  --font-serif:          'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans:           'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Text Colors */
+  --text-dark:           #1e1b1d;
+  --text-medium:         #3e3538;
+  --text-maroon:         #822544;
+  --text-muted:          #8c8286;
+  --text-logout:         #db6f84;
+  
+  /* Action & Status Colors */
+  --color-check-green:   #347a2a;
+  --color-trash:         #b82d3b;
+  --color-edit:          #8f2c4a;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* ==========================================================
+   APP SHELL LAYOUT
+   ========================================================== */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg-main);
+}
+
+/* ==========================================================
+   SIDEBAR (Left Navigation)
+   ========================================================== */
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-sidebar);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0 28px 0;
+  user-select: none;
+}
+
+/* Logo */
+.sidebar-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px 28px;
+  text-decoration: none;
+}
+
+.sidebar-logo img {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-logo:hover img {
+  transform: scale(1.02);
+}
+
+/* Nav Menu */
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 16px;
+  flex: 1;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.1s ease;
+}
+
+.menu-item svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  stroke: var(--wedora-maroon);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.18s ease;
+}
+
+.menu-item:hover {
+  background-color: #faedf0;
+  color: var(--wedora-maroon);
+}
+
+/* Active Menu Item (Tasks) - rich maroon capsule */
+.menu-item.active {
+  background-color: var(--wedora-maroon);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 3px 12px rgba(130, 37, 68, 0.22);
+}
+
+.menu-item.active svg {
+  stroke: #ffffff;
+}
+
+/* Logout Button at bottom */
+.sidebar-footer {
+  padding: 20px 24px 0;
+}
+
+.btn-logout {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 28px;
+  border: 1px solid var(--border-logout);
+  background-color: var(--bg-logout);
+  color: var(--text-logout);
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-logout svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-logout);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.btn-logout:hover {
+  background-color: #fce8eb;
+  border-color: #f7a8b6;
+  color: var(--wedora-maroon);
+  transform: translateY(-1px);
+}
+.btn-logout:hover svg {
+  stroke: var(--wedora-maroon);
+}
+
+/* ==========================================================
+   MAIN CONTENT AREA
+   ========================================================== */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--bg-main);
+}
+
+/* Top Bar: Title & +Add Task Button */
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 48px 24px 48px;
+}
+
+.page-heading {
+  font-family: var(--font-serif);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--wedora-maroon);
+  letter-spacing: -0.2px;
+}
+
+/* +Add Task Button */
+.btn-add-task {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--wedora-maroon);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(130, 37, 68, 0.25);
+  transition: background-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+}
+
+.btn-add-task:hover {
+  background-color: var(--wedora-maroon-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(130, 37, 68, 0.35);
+}
+
+.btn-add-task:active {
+  transform: translateY(0);
+}
+
+/* Full Width Divider Line */
+.header-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-divider);
+  margin-bottom: 30px;
+}
+
+/* Main Section Content */
+.main-body {
+  padding: 0 48px 48px 48px;
+  flex: 1;
+}
+
+/* ==========================================================
+   FILTER TABS (All, To Do, In Progress, Completed)
+   ========================================================== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.filter-tab {
+  background-color: var(--bg-tab-inactive);
+  color: var(--wedora-maroon);
+  border: none;
+  border-radius: 9px;
+  padding: 8px 24px;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.filter-tab:hover {
+  background-color: #f7e0e5;
+}
+
+/* Active tab */
+.filter-tab.active {
+  background-color: var(--wedora-maroon);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(130, 37, 68, 0.2);
+}
+
+/* ==========================================================
+   TASKS TABLE CONTAINER / CARD
+   ========================================================== */
+.tasks-card {
+  background-color: var(--bg-card);
+  border-radius: 24px;
+  border: 1px solid var(--border-card);
+  padding: 32px 36px 36px 36px;
+  box-shadow: 0 4px 20px rgba(130, 37, 68, 0.04);
+  min-height: 480px;
+}
+
+.tasks-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+/* Table Header */
+.tasks-table thead th {
+  padding: 0 16px 20px 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--wedora-maroon);
+  white-space: nowrap;
+  letter-spacing: 0.1px;
+}
+
+.tasks-table thead th:last-child {
+  text-align: center;
+  padding-right: 0;
+}
+
+/* Table Rows */
+.tasks-table tbody tr {
+  border-bottom: 1px solid var(--border-row);
+  transition: background-color 0.15s ease;
+}
+
+.tasks-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.tasks-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+.tasks-table td {
+  padding: 16px 16px 16px 0;
+  font-size: 14px;
+  color: var(--text-dark);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.tasks-table td:first-child {
+  font-weight: 500;
+  color: #1a1719;
+}
+
+.tasks-table td.col-action {
+  text-align: center;
+  padding-right: 0;
+}
+
+/* ==========================================================
+   ACTION ICONS (Matching Screenshot)
+   ========================================================== */
+.action-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* Green Completed Checkmark Circle */
+.icon-completed {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--color-check-green);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.icon-completed svg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-completed:hover {
+  transform: scale(1.15);
+}
+
+/* Edit & Delete Action Buttons */
+.btn-action-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-action-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Pencil icon (brownish-maroon) */
+.btn-action-icon.btn-edit {
+  color: var(--color-edit);
+}
+.btn-action-icon.btn-edit svg {
+  stroke: var(--color-edit);
+}
+
+/* Trash bin icon (maroon/red) */
+.btn-action-icon.btn-delete {
+  color: var(--color-trash);
+}
+.btn-action-icon.btn-delete svg {
+  stroke: var(--color-trash);
+}
+
+.btn-action-icon:hover {
+  transform: scale(1.18);
+  opacity: 0.85;
+}
+
+/* Loading & Empty State */
+.loading-row,
+.empty-row {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted);
+  font-size: 14.5px;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f2d8df;
+  border-top-color: var(--wedora-maroon);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================
+   MODAL (Add / Edit Task Popup)
+   ========================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(26, 12, 18, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(78, 14, 36, 0.22);
+  overflow: hidden;
+  transform: translateY(18px) scale(0.97);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--border-card);
+}
+
+.modal-overlay.is-open .modal-container {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 26px;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-card);
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--wedora-maroon);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.modal-close:hover {
+  color: var(--wedora-maroon);
+}
+
+.modal-form {
+  padding: 24px 26px 26px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-medium);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.3px solid #e7d8dc;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  color: var(--text-dark);
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--wedora-maroon);
+  box-shadow: 0 0 0 3px rgba(130, 37, 68, 0.12);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-modal-cancel {
+  padding: 9px 20px;
+  border-radius: 8px;
+  border: 1px solid #e0d0d5;
+  background-color: #ffffff;
+  color: var(--text-medium);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-modal-cancel:hover {
+  background-color: #f7ebef;
+  color: var(--wedora-maroon);
+}
+
+.btn-modal-submit {
+  padding: 9px 24px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--wedora-maroon);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(130, 37, 68, 0.25);
+  transition: all 0.15s ease;
+}
+
+.btn-modal-submit:hover {
+  background-color: var(--wedora-maroon-dark);
+  box-shadow: 0 4px 14px rgba(130, 37, 68, 0.35);
+}
+
+/* ==========================================================
+   TOAST NOTIFICATION
+   ========================================================== */
+.toast-msg {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  background: var(--wedora-maroon);
+  color: #ffffff;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 6px 22px rgba(130, 37, 68, 0.3);
+  z-index: 10000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+.toast-msg.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================
+   RESPONSIVE DESIGN
+   ========================================================== */
+@media (max-width: 900px) {
+  .app-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    padding: 14px 20px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .sidebar-logo {
+    padding: 0;
+  }
+  .sidebar-logo img {
+    height: 46px;
+  }
+  .sidebar-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0;
+    gap: 6px;
+  }
+  .menu-item {
+    padding: 8px 12px;
+    font-size: 13.5px;
+    gap: 8px;
+  }
+  .sidebar-footer {
+    padding: 0;
+  }
+  .main-header {
+    padding: 24px 20px 18px 20px;
+  }
+  .page-heading {
+    font-size: 26px;
+  }
+  .main-body {
+    padding: 0 20px 32px 20px;
+  }
+  .tasks-card {
+    padding: 20px;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 580px) {
+  .filter-bar {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-tab {
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+}

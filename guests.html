@@ -13,7 +13,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/guests.css" />
   <link rel="stylesheet" href="css/app-shell.css">
-
 </head>
 
 <body>
@@ -21,7 +20,9 @@
 <!--  SIDEBAR  -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <img src="images/logo.png" alt="Wedora" />
+    <a href="dashboard.html" aria-label="WEDORA home">
+      <img src="images/logo.png" alt="WEDORA - Plan Your Perfect Beginning">
+    </a>
   </div>
 
   <nav class="sidebar-nav" aria-label="Dashboard navigation">
@@ -56,9 +57,9 @@
   </nav>
 
   <div class="sidebar-footer">
-    <button class="logout-btn" id="logoutBtn">
-      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Log out
+    <button type="button" class="btn-logout" id="logoutBtn" title="Log out">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      <span>Log out</span>
     </button>
   </div>
 </aside>
