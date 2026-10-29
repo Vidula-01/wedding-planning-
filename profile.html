@@ -61,74 +61,218 @@
     <div id="dashStatus" class="dash-status">Loading your profile…</div>
     <section id="dashBody" class="profile-page" style="display:none;">
       <h1>Profile</h1>
-      <div class="profile-layout">
-        <section class="profile-photo-column">
-          <div class="profile-photo-frame">
-            <img id="profilePhoto" src="images/profile-default.png" alt="Profile photo">
-          </div>
-          <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
-          <button type="button" class="profile-photo-btn" id="changePhotoBtn">
-            <svg viewBox="0 0 24 24"><path d="M4 7h4l1.5-2h5L16 7h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/><circle cx="12" cy="13" r="3.5"/></svg>
-            Change Photo
-          </button>
-          <div id="photoStatus" class="photo-status"></div>
-        </section>
+      
+<div class="profile-layout">
+  <section class="profile-photo-column">
+    <div class="profile-photo-frame">
+      <img id="profilePhoto" src="images/profile-default.png" alt="Profile photo">
+    </div>
 
-        <section class="profile-form-column">
-          <form id="profileForm" novalidate>
-            <div class="profile-field">
-              <label for="fullName">Full Name</label>
-              <input id="fullName" name="full_name" type="text" autocomplete="name" required>
-              <div class="field-error" id="err_full_name"></div>
-            </div>
-            <div class="profile-field">
-              <label for="email">Email Address</label>
-              <input id="email" name="email" type="email" autocomplete="email" required>
-              <div class="field-error" id="err_email"></div>
-            </div>
-            <div class="profile-field">
-              <label for="phone">Phone Number</label>
-              <input id="phone" name="phone" type="tel" autocomplete="tel" required>
-              <div class="field-error" id="err_phone"></div>
-            </div>
-            <div class="profile-field">
-              <label for="address">Address</label>
-              <textarea id="address" name="address" autocomplete="street-address" rows="3" maxlength="255" placeholder="Enter your address"></textarea>
-              <div class="field-error" id="err_address"></div>
-            </div>
-            <div class="profile-field">
-              <label for="dateOfBirth">Date of Birth</label>
-              <input id="dateOfBirth" name="date_of_birth" type="date" autocomplete="bday">
-              <div class="field-error" id="err_date_of_birth"></div>
-            </div>
+    <input id="photoInput" type="file"
+      accept="image/jpeg,image/png,image/webp" hidden>
 
-            <button type="button" class="password-toggle" id="changePasswordBtn">
-              <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-              Change Password
-            </button>
+    <button type="button" class="profile-photo-btn" id="changePhotoBtn">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7h4l1.5-2h5L16 7h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Z"/>
+        <circle cx="12" cy="13" r="3.5"/>
+      </svg>
+      Change Photo
+    </button>
+    <div id="photoStatus" class="photo-status"></div>
+    <div class="photo-modal" id="photoModal" hidden>
+  <div class="photo-modal-backdrop" id="photoModalBackdrop"></div>
 
-            <button type="submit" class="profile-save-btn" id="saveProfileBtn">
-              <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
-              Save Changes
-            </button>
-            <div id="profileStatus" class="form-status"></div>
-          </form>
+  <section class="photo-modal-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="photoModalTitle">
 
-          <form id="passwordForm" class="password-form" novalidate hidden>
-            <h2>Change Password</h2>
-            <div class="profile-field"><label for="currentPassword">Current Password</label><input id="currentPassword" name="current_password" type="password" autocomplete="current-password"><div class="field-error" id="err_current_password"></div></div>
-            <div class="profile-field"><label for="newPassword">New Password</label><input id="newPassword" name="new_password" type="password" autocomplete="new-password"><div class="field-error" id="err_new_password"></div></div>
-            <div class="profile-field"><label for="confirmPassword">Confirm New Password</label><input id="confirmPassword" name="confirm_password" type="password" autocomplete="new-password"><div class="field-error" id="err_confirm_password"></div></div>
-            <div class="password-actions">
-              <button type="submit" class="profile-save-btn" id="savePasswordBtn">Update Password</button>
-              <button type="button" class="password-cancel" id="cancelPasswordBtn">Cancel</button>
-            </div>
-            <div id="passwordStatus" class="form-status"></div>
-          </form>
-        </section>
+    <button type="button" class="photo-modal-close"
+      id="closePhotoModal" aria-label="Close">×</button>
+
+    <span class="photo-modal-eyebrow">YOUR ACCOUNT</span>
+    <h2 id="photoModalTitle">Update Your Photo</h2>
+    <p class="photo-modal-description">
+      Choose a photo that feels like you.
+    </p>
+
+    <div class="photo-preview-frame">
+      <img id="photoPreview" src="images/profile-default.png"
+        alt="Selected photo preview">
+    </div>
+
+    <p class="photo-file-name" id="photoFileName">
+      Choose a photo to see its preview
+    </p>
+
+    <button type="button" class="photo-choose-btn" id="choosePhotoBtn">
+      Choose Photo
+    </button>
+
+    <p class="photo-hint">JPG, PNG or WebP · Maximum 5 MB</p>
+
+    <div id="photoModalStatus" class="photo-modal-status"
+      role="status"></div>
+
+    <div class="photo-modal-actions">
+      <button type="button" class="photo-cancel-btn"
+        id="cancelPhotoBtn">Cancel</button>
+      <button type="button" class="photo-save-btn"
+        id="savePhotoBtn" disabled>Save Photo</button>
+    </div>
+  </section>
+</div>
+  </section>
+
+  <section class="profile-form-column">
+    <div class="profile-details-card">
+      <div class="profile-details-heading">
+        <div>
+          <span class="profile-eyebrow">YOUR ACCOUNT</span>
+          <h2>Personal Details</h2>
+          <p>View your profile information below.</p>
+        </div>
+        <span class="profile-view-icon">♡</span>
       </div>
-    </section>
-  </main>
-  <script src="js/profile.js"></script>
+
+      <div class="profile-detail-row">
+        <span>Full Name</span>
+        <strong id="displayFullName">—</strong>
+      </div>
+      <div class="profile-detail-row">
+        <span>Email Address</span>
+        <strong id="displayEmail">—</strong>
+      </div>
+      <div class="profile-detail-row">
+        <span>Phone Number</span>
+        <strong id="displayPhone">—</strong>
+      </div>
+      <div class="profile-detail-row">
+        <span>Address</span>
+        <strong id="displayAddress">—</strong>
+      </div>
+      <div class="profile-detail-row">
+        <span>Date of Birth</span>
+        <strong id="displayDateOfBirth">—</strong>
+      </div>
+
+      <button type="button" class="profile-edit-btn" id="openEditProfile">
+        <span>✎</span> Edit Profile
+      </button>
+    </div>
+  </section>
+</div>
+
+<div class="profile-modal" id="profileModal" hidden>
+  <div class="profile-modal-backdrop" id="profileModalBackdrop"></div>
+
+  <section class="profile-modal-dialog" role="dialog"
+    aria-modal="true" aria-labelledby="editProfileTitle">
+
+    <div class="profile-modal-header">
+      <div>
+        <span class="profile-eyebrow">YOUR ACCOUNT</span>
+        <h2 id="editProfileTitle">Edit Profile</h2>
+        <p>Keep your personal details up to date.</p>
+      </div>
+      <button type="button" class="profile-modal-close"
+        id="closeEditProfile" aria-label="Close">×</button>
+    </div>
+
+    <form id="profileForm" novalidate>
+      <div class="profile-modal-fields">
+        <div class="profile-field">
+          <label for="fullName">Full Name</label>
+          <input id="fullName" name="full_name" type="text"
+            autocomplete="name" required>
+          <div class="field-error" id="err_full_name"></div>
+        </div>
+
+        <div class="profile-field">
+          <label for="email">Email Address</label>
+          <input id="email" name="email" type="email"
+            autocomplete="email" required>
+          <div class="field-error" id="err_email"></div>
+        </div>
+
+        <div class="profile-field">
+          <label for="phone">Phone Number</label>
+          <input id="phone" name="phone" type="tel"
+            autocomplete="tel" required>
+          <div class="field-error" id="err_phone"></div>
+        </div>
+
+        <div class="profile-field">
+          <label for="address">Address</label>
+          <textarea id="address" name="address"
+            autocomplete="street-address" rows="2"
+            maxlength="255" placeholder="Enter your address"></textarea>
+          <div class="field-error" id="err_address"></div>
+        </div>
+
+        <div class="profile-field">
+          <label for="dateOfBirth">Date of Birth</label>
+          <input id="dateOfBirth" name="date_of_birth"
+            type="date" autocomplete="bday">
+          <div class="field-error" id="err_date_of_birth"></div>
+        </div>
+      </div>
+
+      <button type="button" class="password-toggle" id="changePasswordBtn">
+        Change Password
+      </button>
+
+      <div id="profileStatus" class="form-status" role="status"></div>
+
+      <div class="profile-modal-actions">
+        <button type="button" class="password-cancel"
+          id="cancelEditProfile">Cancel</button>
+        <button type="submit" class="profile-save-btn" id="saveProfileBtn">
+          Save Changes
+        </button>
+      </div>
+    </form>
+
+    <form id="passwordForm" class="password-form" novalidate hidden>
+      <h2>Change Password</h2>
+
+      <div class="profile-field">
+        <label for="currentPassword">Current Password</label>
+        <input id="currentPassword" name="current_password"
+          type="password" autocomplete="current-password">
+        <div class="field-error" id="err_current_password"></div>
+      </div>
+
+      <div class="profile-field">
+        <label for="newPassword">New Password</label>
+        <input id="newPassword" name="new_password"
+          type="password" autocomplete="new-password">
+        <div class="field-error" id="err_new_password"></div>
+      </div>
+
+      <div class="profile-field">
+        <label for="confirmPassword">Confirm New Password</label>
+        <input id="confirmPassword" name="confirm_password"
+          type="password" autocomplete="new-password">
+        <div class="field-error" id="err_confirm_password"></div>
+      </div>
+
+      <div class="password-actions">
+        <button type="submit" class="profile-save-btn" id="savePasswordBtn">
+          Update Password
+        </button>
+        <button type="button" class="password-cancel"
+          id="cancelPasswordBtn">Cancel</button>
+      </div>
+      <div id="passwordStatus" class="form-status" role="status"></div>
+    </form>
+  </section>
+
+</div>
+</section>
+</main>
+
+<script src="js/profile.js"></script>
 </body>
 </html>
+
